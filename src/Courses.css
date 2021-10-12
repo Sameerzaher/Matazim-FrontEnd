@@ -1,0 +1,20 @@
+.Courses {
+    display: flex;
+    justify-content: center;
+  }
+
+  .lessons{
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      grid-gap: 20px;
+  }
+
+  .Header {
+    
+    min-height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(6px + 2vmin);
+    color: rgb(0, 0, 0);
+  }
