@@ -8,10 +8,11 @@ function Signin(){
     const[password, setPassword ] = useState('');
 
     const[token, setToken] = useCookies(['mr-token']);
-
+ 
     useEffect( () =>{
         console.log(token)
-        if(token['mr-token']) window.location.href ='/HomePageScreen'; 
+        if(token['mr-token']) 
+            window.location.href ='/HomePageScreen'; 
       }, [token])
 
     const[isLoginView, setIsLoginView ] = useState(true);
@@ -40,10 +41,10 @@ function Signin(){
              {isLoginView ?  
                 <button onClick={loginClicked}>התחבר</button>:
                 <button onClick={registerClicked}>הירשם</button>}
-             {isLoginView ? 
-              <p onClick={() => setIsLoginView(false)}> אם אינך רשום לאתר - הירשם כאן</p>: 
-              <p onClick={() => setIsLoginView(true)}>  אם הינך רשום לאתר - התחבר כאן</p>
-              }
+                {isLoginView ? 
+                  <p onClick={() => setIsLoginView(false)}> אם אינך רשום לאתר - הירשם כאן</p>: 
+                  <p onClick={() => setIsLoginView(true)}>  אם הינך רשום לאתר - התחבר כאן</p>
+                }
 
             </div>
     

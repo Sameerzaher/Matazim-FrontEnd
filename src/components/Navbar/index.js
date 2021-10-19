@@ -11,15 +11,18 @@ import {
   NavBtnLink,
 } from "./NavbarElements";
 
-//check if the user logged in
+
 const Navbar = () => {
     
-    const[token, setToken] = useCookies(['mr-token']);
-    const[navBar, setNavBar ] = useState('התחבר');
+    const[token, setToken, deleteToken] = useCookies(['mr-token']);
 
-   useEffect(() =>{
-    setNavBar('התנתק')
-}, [token])
+
+const logoutUser = () => {
+      console.log("inside logoutUser");
+      console.log(token);
+      deleteToken(['mr-token']);
+      console.log(token);
+}
   
     return (
         <>
@@ -29,9 +32,9 @@ const Navbar = () => {
             </NavLogo>
             <Bars />
             <NavMenu>
-            <NavLink to="/Signin" activeStyle>
-                    התחברות
-                </NavLink> 
+            <NavLink to="/ProfileScreen" activeStyle>
+                    פרופייל
+                </NavLink>
             <NavLink to="/ProjectsScreen" activeStyle>
                     פרויקטים
                 </NavLink> 
@@ -42,12 +45,13 @@ const Navbar = () => {
                     דף הבית
                 </NavLink>
                
-                <NavLink  to="/Signin" activeStyle>
-                {navBar}
-                </NavLink>
-                {/* <NavLink to="/Signin" activeStyle>
+
+                {token['mr-token'] ? (<NavBtn onClick={logoutUser} activeStyle>
                     התנתק
-                </NavLink> */}
+                </NavBtn> ) : <NavLink  to="/Signin" activeStyle>
+                    התחבר
+                </NavLink>}
+
                 
             </NavMenu> 
            </Nav> 
