@@ -31,7 +31,9 @@ const displayLessons = (lesson) =>{
   setUrl(lesson.link)
   console.log(lessonNumber)
   setLessonsNumber(lesson.numOfLesson)
+  setCurrentLesson(lesson)
   console.log(lessonNumber)
+  
 }
 const playNextLesson= () =>  {
   console.log(lessonNumber)
@@ -41,7 +43,17 @@ const playNextLesson= () =>  {
       .then(console.log(currentLesson))
       .catch( error => console.log(error)) 
   setUrl(currentLesson.link)
-   
+  //setLessonsNumber(currentLesson.numOfLesson) 
+  setLessonsNumber(lessonNumber+1)
+}
+const playPreviousLesson= () =>  {
+  console.log(lessonNumber)
+  API.getPreviousLesson(lessonNumber)
+      .then( resp => setCurrentLesson(resp))
+      .then(console.log(currentLesson))
+      .catch( error => console.log(error)) 
+  setUrl(currentLesson.link)
+  setLessonsNumber(currentLesson.numOfLesson)  
 }
 
 
@@ -70,25 +82,36 @@ const playNextLesson= () =>  {
         })} */}
       </div>
       <div>
-      {/* { courses.map( lesson => {
+      {/* { courses.map( lesson => {         &nbsp;&nbsp;&nbsp;
           lesson.lessons.map(nam =>{
             return <h2>{nam.name}</h2>
         })
           })} */}
         </div>
         <div>
-          <ReactPlayer controls url={url} />
-          <button onClick={playNextLesson}>שיעור הבא</button><br/>
+          <ReactPlayer controls url={url} width='70%'
+          height='220%'/><br/>
+          {/* <div className="prevAndNext"> */}
+            <button className="prevAndNext" onClick={playNextLesson} >השיעור הבא</button>
+            <button className="prevAndNext" onClick={playPreviousLesson}>השיעור הקודם</button><br/>
+          {/* </div> */}
         </div>
         <div>
           {/* display as buttons all the lessons of the selected course  */}
-        { courses.map(lesson => {
+        {/* { courses.map(lesson => {
             return <h2>{lesson.lessons.map((name) => 
-              <button onClick={() => displayLessons(name)}>{name.name} </button> 
+             <ul class="lessonsList"> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
+              //<button onClick={displayLessons(name.name)}>{name.name} </button>
+            )}</h2>
+        })} */}
+           
+           { courses.map(lesson => {
+            return <h2>{lesson.lessons.map((name) => 
+             <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
               //<button onClick={displayLessons(name.name)}>{name.name} </button>
             )}</h2>
         })}
-           
+
            {/* <button onClick={() => setUrl('https://youtu.be/i9-HWYsrh_k')} >שיעור 1</button><br/>
            <button onClick={() => setUrl('https://youtu.be/OWuRhPUP31s')}>שיעור 2</button><br/>
            <button onClick={() => setUrl('https://youtu.be/Ew_JiqX1EO0')} >שיעור 3</button><br/>

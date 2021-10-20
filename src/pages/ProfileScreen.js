@@ -28,37 +28,45 @@ class ProfileScreen extends React.Component {
     }
     render(){
         return (
-            
             <Container>
-                <Row>
-                    <Col>
-                        <h1>User Profile</h1>
-                        <Form className="form">     
-                            <p>{this.state.msg}</p>
-                                    <Form.Group controlId="formCategory1">
-                                        <Form.Label>Username</Form.Label>
-                                        <Form.Control type="text" defaultValue={this.state.username}/> 
-                                    </Form.Group>   
-                                    <Form.Group controlId="formCategory2">
-                                        <Form.Label>Email</Form.Label>
-                                        <Form.Control type="email" defaultValue={this.state.email} />  
-                                    </Form.Group>
-                                    <Form.Group controlId="formCategory3">
-                                        <Form.Label>First Name</Form.Label>
-                                        <Form.Control type="text" name="firstname" onChange={this.changefirstname}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formCategory4">
-                                        <Form.Label>Last Name</Form.Label>
-                                        <Form.Control type="text" name="lastname" onChange={this.changelastname}/>
-                                    </Form.Group>   
-                                    <Form.Group controlId="formCategory5">
-                                        <Form.Label>Skills</Form.Label>
-                                        <Form.Control type="text" name="skills" onChange={this.changeskills}/>
-                                    </Form.Group>   
-                                <Button variant="primary" onClick={this.UpdateProfileHandler}>Update Profile</Button>
-                        </Form>
-                    </Col>
-                </Row>
+            <Row>
+           
+            <Col>
+                <h1>User Profile</h1>
+                <Form className="form">     
+        <p>{this.state.msg}</p>
+
+       
+       
+
+      <Form.Group controlId="formCategory1">
+        <Form.Label>Username</Form.Label>
+        <Form.Control type="text" defaultValue={this.state.username}/>
+      
+      </Form.Group>
+      <Form.Group controlId="formCategory2">
+        <Form.Label>Email</Form.Label>
+        <Form.Control type="email" defaultValue={this.state.email} />
+      
+      </Form.Group>
+     
+      <Form.Group controlId="formCategory3">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control type="text" name="firstname" onChange={this.changefirstname}/>
+        </Form.Group>
+        <Form.Group controlId="formCategory4">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control type="text" name="lastname" onChange={this.changelastname}/>
+        </Form.Group>
+        <Form.Group controlId="formCategory5">
+        <Form.Label>Skills</Form.Label>
+        <Form.Control type="text" name="skills" onChange={this.changeskills}/>
+        </Form.Group>
+      <Button variant="primary" onClick={this.UpdateProfileHandler}>Update Profile</Button>
+      </Form>
+       </Col>
+    
+           </Row>
             </Container>
         )
 
