@@ -38,7 +38,7 @@ const logoutUser = () => {
             <NavLink to="/ProjectsScreen" activeStyle>
                     פרויקטים
                 </NavLink> 
-                <NavLink to="/CoursesScreen" activeStyle>
+                <NavLink to="/CoursesMainScreen" activeStyle>
                     קורסים
                 </NavLink>
                 <NavLink to="/HomeScreen" activeStyle>

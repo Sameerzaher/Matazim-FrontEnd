@@ -68,5 +68,17 @@ export class API {
                     })
                     .then( resp => resp.json())
                 }
+
+                static getCurrentCourse(numOfCourse){ 
+                    console.log("inside displayCourses fun")
+                    return fetch(`http://127.0.0.1:8000/main/courses/${numOfCourse}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                         },
+                        //body: JSON.stringify( body )
+                    }).then( resp => resp.json())
+                    // .then( resp => console.log(resp))
+                    }           
         
     }
