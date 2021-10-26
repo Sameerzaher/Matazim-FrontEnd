@@ -68,61 +68,17 @@ export class API {
                     })
                     .then( resp => resp.json())
                 }
-        
 
-                static loginUser(body){ 
-                    return fetch(`https://yarintz.pythonanywhere.com/auth/`, {
-                        method: 'POST',
+                static getCurrentCourse(numOfCourse){ 
+                    console.log("inside displayCourses fun")
+                    return fetch(`http://127.0.0.1:8000/main/courses/${numOfCourse}/`, {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify( body )
+                         },
+                        //body: JSON.stringify( body )
                     }).then( resp => resp.json())
-                    }
-            
-                    static registerUser(body){ 
-                        console.log(body)
-                        return fetch(`https://yarintz.pythonanywhere.com/main/users/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify( body )
-                        }).then( resp => resp.json())
-                        }
-                    static displayCourses(){ 
-                            console.log("inside displayCourses fun")
-                            return fetch(`https://yarintz.pythonanywhere.com/main/courses/`, {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                 },
-                                //body: JSON.stringify( body )
-                            }).then( resp => resp.json())
-                            // .then( resp => console.log(resp))
-                            }           
-                 
-                            static getNextLesson(num){ 
-                                console.log("inside getNextLesson fun")
-                                return fetch(`https://yarintz.pythonanywhere.com/main/lessons/${num}/`, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                        },
-                                    //body: JSON.stringify( body )
-                                })
-                                .then( resp => resp.json())
-                                 //.then( resp => console.log(resp)) 
-                            }
-                            static getPreviousLesson(num){ 
-                                console.log("inside getPreviousLesson fun")
-                                console.log(num)
-                                return fetch(`https://yarintz.pythonanywhere.com/main/lessons/${num}/`, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                        },                       
-                                })
-                                .then( resp => resp.json())
-                            }
+                    // .then( resp => console.log(resp))
+                    }           
+        
     }

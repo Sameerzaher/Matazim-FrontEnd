@@ -5,7 +5,7 @@ import HomepageScreen from './pages/HomepageScreen';
 import CoursesScreen from './pages/CoursesScreen';
 import ProjectsScreen from './pages/ProjectsScreen';
 import ProfileScreen from './pages/ProfileScreen';
-
+import CoursesMainScreen from './pages/CoursesMainScreen';
 import Signin from './pages/Signin'; 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
@@ -27,6 +27,7 @@ function App() {
         <Route path="/ProjectsScreen" component={ProjectsScreen} />
         <Route path="/ProfileScreen" component={ProfileScreen} />
         <Route path="/Signin" component={Signin} />
+        <Route path="/CoursesMainScreen" component={CoursesMainScreen} />
       </Switch>
     </Router>
   );

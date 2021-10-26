@@ -2,10 +2,17 @@ import React, {useEffect, useState} from 'react';
 import ReactPlayer from 'react-player';
 import '../Courses.css';
 import { API } from '../api-service';
+// import Alert from 'react-popup-alert'
+// npm install --save react-popup-alert
 
 
 
 const CoursesScreen = () => {
+const search = window.location.search; // returns the URL query String
+const params = new URLSearchParams(search); 
+const IdFromURL = params.get('id');  
+console.log("now"); 
+console.log(IdFromURL); 
 const [courses, setCourses] = useState([]);
 const [lessons, setLessons] = useState([]);
 const [lessonNumber, setLessonsNumber] = useState(['1']);
@@ -13,11 +20,19 @@ const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
 const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k'); 
 
+
+
+
+
+
 //const displayCourses = () =>  {
   useEffect(() =>{ 
   API.displayCourses()
       .then( resp => setCourses(resp))
       .catch( error => console.log(error)) 
+    // API.getCurrentCourse(IdFromURL)
+    //   .then( resp => setCourses(resp))
+    //   .catch( error => console.log(error))
   API.getLessons()
       .then( resp => setLessons(resp))
       .catch( error => console.log(error))
@@ -30,30 +45,34 @@ const displayLessons = (lesson) =>{
   console.log(lesson.numOfLesson);
   setUrl(lesson.link)
   console.log(lessonNumber)
-  setLessonsNumber(lesson.numOfLesson)
+  setLessonsNumber(lesson.id)
   setCurrentLesson(lesson)
   console.log(lessonNumber)
   
 }
 const playNextLesson= () =>  {
+  // if (lessonNumber > 4){
+  //   AlertDismissible();
+  // }
   console.log(lessonNumber)
   console.log(lessonNumber+2)
-  API.getNextLesson(lessonNumber+2)
+  API.getNextLesson(lessonNumber+1)
       .then( resp => setCurrentLesson(resp))
       .then(console.log(currentLesson))
       .catch( error => console.log(error)) 
   setUrl(currentLesson.link)
   //setLessonsNumber(currentLesson.numOfLesson) 
-  setLessonsNumber(lessonNumber+1)
+  // setLessonsNumber(lessonNumber+1)
+  setLessonsNumber(currentLesson.id)
 }
 const playPreviousLesson= () =>  {
   console.log(lessonNumber)
-  API.getPreviousLesson(lessonNumber)
+  API.getPreviousLesson(lessonNumber-1)
       .then( resp => setCurrentLesson(resp))
       .then(console.log(currentLesson))
       .catch( error => console.log(error)) 
   setUrl(currentLesson.link)
-  setLessonsNumber(currentLesson.numOfLesson)  
+  setLessonsNumber(currentLesson.id)  
 }
 
 
@@ -63,7 +82,11 @@ const playPreviousLesson= () =>  {
   
     <div className="App">
       <header className="Header">
-      <h1>קורס פייתון - בסיס</h1>
+      <h1>{courses.name}</h1>
+     {/* {  coursesList.map( course => {
+            return <h1>{course.name}</h1>
+          })}  */}
+
       </header> 
       <div className="lessons">
       <div>
@@ -96,7 +119,7 @@ const playPreviousLesson= () =>  {
             <button className="prevAndNext" onClick={playPreviousLesson}>השיעור הקודם</button><br/>
           {/* </div> */}
         </div>
-        <div>
+       
           {/* display as buttons all the lessons of the selected course  */}
         {/* { courses.map(lesson => {
             return <h2>{lesson.lessons.map((name) => 
@@ -104,13 +127,24 @@ const playPreviousLesson= () =>  {
               //<button onClick={displayLessons(name.name)}>{name.name} </button>
             )}</h2>
         })} */}
-           
-           { courses.map(lesson => {
+ <div>
+           {/* display the lessons for the chosen course - working!*/}
+           {/* { courses.map(lesson => {
             return <h2>{lesson.lessons.map((name) => 
              <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
               //<button onClick={displayLessons(name.name)}>{name.name} </button>
             )}</h2>
-        })}
+        })} */}
+            {/* second try */}
+          { courses.map(lesson => { 
+             if(lesson.id == IdFromURL) 
+                return <h2>{lesson.lessons.map((name) => 
+                <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
+         
+            )}</h2>
+          })}
+</div>        
+
 
            {/* <button onClick={() => setUrl('https://youtu.be/i9-HWYsrh_k')} >שיעור 1</button><br/>
            <button onClick={() => setUrl('https://youtu.be/OWuRhPUP31s')}>שיעור 2</button><br/>
@@ -133,7 +167,7 @@ const playPreviousLesson= () =>  {
            <button onClick={() => setUrl('https://youtu.be/Q-vWAl6AdsE')}>שיעור 19</button><br/>
            <button onClick={() => setUrl('https://youtu.be/z5zA9wMjwmQ')} >שיעור 20</button><br/>
            <button onClick={() => setUrl('https://youtu.be/HfyV9IzyaJQ')}>שיעור 21</button><br/> */}
-        </div>
+        
         {/* <div>
           
           { courses.map( course => {
