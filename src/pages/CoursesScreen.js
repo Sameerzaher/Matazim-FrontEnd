@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import ReactPlayer from 'react-player';
 import '../Courses.css';
 import { API } from '../api-service';
-// import Alert from 'react-popup-alert'
-// npm install --save react-popup-alert
+// import ReactDom from 'react-dom';
+//import Popup from 'react-popup';
+import Popup from '../components/Popup';
+
+
 
 
 
@@ -19,7 +22,7 @@ const [lessonNumber, setLessonsNumber] = useState(['1']);
 const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
 const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k'); 
-
+const[buttonPopup, setButtonPopup ] = useState(false); 
 
 
 
@@ -51,9 +54,23 @@ const displayLessons = (lesson) =>{
   
 }
 const playNextLesson= () =>  {
+  setButtonPopup(true);
+//   Popup.alert('I am alert, nice to meet you');
+//   /** Call the plugin */
+// Popup.plugins().prompt('', 'Type your name', function (value) {
+//   Popup.alert('You typed: ' + value);
+//});
   // if (lessonNumber > 4){
   //   AlertDismissible();
   // }
+   
+  if (currentLesson.assignment != "null"){
+    console.log(currentLesson.assignment);
+  }
+  else{
+    console.log("there is no assignment");
+    console.log(currentLesson.assignment);
+  }
   console.log(lessonNumber)
   console.log(lessonNumber+2)
   API.getNextLesson(lessonNumber+1)
@@ -183,6 +200,10 @@ const playPreviousLesson= () =>  {
       });
     } */}
     </div>
+    <Popup trigger={buttonPopup}>
+      <h3>hello</h3>
+      <p>hello this is popup</p>
+    </Popup>
     </div>  
 
   );
