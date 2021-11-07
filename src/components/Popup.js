@@ -1,11 +1,15 @@
 import React from 'react';
+import './Popup.css'
+
 
 function Popup(props) {
     return(props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
-                <button className="close-btn">close</button>
+                <button className="close-btn" onClick={() => props.setTrigger(false)}>סגור</button>
                 {props.children }
+                {/* <button onClick={() => props.proceedToNextLesson}>שמור והמשך לשיעור הבא</button> */}
+                <input type = "text"></input>
             </div>
         </div> 
     ) : "";
