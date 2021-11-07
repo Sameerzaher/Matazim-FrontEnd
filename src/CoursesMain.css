@@ -9,19 +9,21 @@ body {
 }
 .tilesWrap li {
 	/* display: inline-block; */
-    display: inline-block;
+    display: block;
 	width: 20%;
 	min-width: 200px;
 	max-width: 230px;
 	padding: 80px 20px 40px;
 	position: relative;
-	vertical-align: top;
-	margin: 10px;
+	/* vertical-align: top; */
+	margin: 20px;
 	font-family: 'helvetica', san-serif;
 	min-height: 25vh;
-	background: #1b090c;
+	background: #331b52;
 	border: 1px solid #252727;
 	text-align: left;
+	float: left;
+	left: 200px;
 }
 .tilesWrap li h2 {
 	font-size: 114px;

@@ -55,7 +55,7 @@ export class API {
                         //body: JSON.stringify( body )
                     })
                     .then( resp => resp.json())
-                     //.then( resp => console.log(resp)) 
+                    // .then( resp => console.log(resp)) 
                 }
                 static getPreviousLesson(num){ 
                     console.log("inside getPreviousLesson fun")

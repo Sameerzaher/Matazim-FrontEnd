@@ -17,8 +17,9 @@ const IdFromURL = params.get('id');
 console.log("now"); 
 console.log(IdFromURL); 
 const [courses, setCourses] = useState([]);
+const [selectedCourse, setsSelectedCourse] = useState([]);
 const [lessons, setLessons] = useState([]);
-const [lessonNumber, setLessonsNumber] = useState(['1']);
+const [lessonNumber, setLessonsNumber] = useState([1]);
 const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
 const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k'); 
@@ -42,6 +43,23 @@ const[buttonPopup, setButtonPopup ] = useState(false);
  
       
 }, [])
+////////////////////////////////try
+useEffect(() =>{ 
+  console.log("lessonNumberrrrr")
+  console.log(lessonNumber)
+   API.getNextLesson(lessonNumber)
+    .then( resp => setCurrentLesson(resp))
+    //.then(console.log(currentLesson))
+    .catch( error => console.log(error)) 
+   // console.log(currentLesson)
+setUrl(currentLesson.link)
+//setLessonsNumber(currentLesson.numOfLesson) 
+// setLessonsNumber(lessonNumber+1)
+setLessonsNumber(currentLesson.id);
+ // console.log(lessonNumber)
+}, [lessonNumber])
+///////////////////////////////end try
+
 
 const displayLessons = (lesson) =>{
   console.log("asdasd");
@@ -50,38 +68,54 @@ const displayLessons = (lesson) =>{
   console.log(lessonNumber)
   setLessonsNumber(lesson.id)
   setCurrentLesson(lesson)
-  console.log(lessonNumber)
-  
+  console.log("qqqqqqqqqqqqqqq")
+  console.log(lesson)
+  console.log(currentLesson)
+  console.log(currentLesson.assignment)
 }
+// const playNextLesson= () =>  {
+  
+//   if (currentLesson.assignment != "null"){
+//     console.log(currentLesson.assignment);
+//     setButtonPopup(true);
+//   }
+//   else{
+//     console.log("there is no assignment");
+//     console.log(currentLesson.assignment);
+  
+//   console.log(lessonNumber)
+//   console.log(lessonNumber+1)
+//   setLessonsNumber(lessonNumber+1 ,() => {console.log(lessonNumber);});
+//  // console.log(lessonNumber)
+//   API.getNextLesson(lessonNumber+1)
+//       .then( resp => setCurrentLesson(resp))
+//       .then(console.log(currentLesson))
+//       .catch( error => console.log(error)) 
+//       console.log(currentLesson)
+//   setUrl(currentLesson.link)
+//   //setLessonsNumber(currentLesson.numOfLesson) 
+//   // setLessonsNumber(lessonNumber+1)
+//   setLessonsNumber(currentLesson.id)
+// }}
+
+//////////////new try for next lesson
 const playNextLesson= () =>  {
-  setButtonPopup(true);
-//   Popup.alert('I am alert, nice to meet you');
-//   /** Call the plugin */
-// Popup.plugins().prompt('', 'Type your name', function (value) {
-//   Popup.alert('You typed: ' + value);
-//});
-  // if (lessonNumber > 4){
-  //   AlertDismissible();
-  // }
-   
+  
   if (currentLesson.assignment != "null"){
     console.log(currentLesson.assignment);
+    setButtonPopup(true);
   }
   else{
     console.log("there is no assignment");
     console.log(currentLesson.assignment);
-  }
+  
   console.log(lessonNumber)
-  console.log(lessonNumber+2)
-  API.getNextLesson(lessonNumber+1)
-      .then( resp => setCurrentLesson(resp))
-      .then(console.log(currentLesson))
-      .catch( error => console.log(error)) 
-  setUrl(currentLesson.link)
-  //setLessonsNumber(currentLesson.numOfLesson) 
-  // setLessonsNumber(lessonNumber+1)
-  setLessonsNumber(currentLesson.id)
-}
+  console.log(lessonNumber+1)
+  setLessonsNumber(lessonNumber+1)
+}}
+
+
+////////////////////////////////end new try
 const playPreviousLesson= () =>  {
   console.log(lessonNumber)
   API.getPreviousLesson(lessonNumber-1)
@@ -91,6 +125,16 @@ const playPreviousLesson= () =>  {
   setUrl(currentLesson.link)
   setLessonsNumber(currentLesson.id)  
 }
+const proceedToNextLesson= () =>  {
+console.log("lessonNumber+2")
+API.getNextLesson(lessonNumber+1)
+    .then( resp => setCurrentLesson(resp))
+    .then(console.log(currentLesson))
+    .catch( error => console.log(error)) 
+setUrl(currentLesson.link)
+setLessonsNumber(currentLesson.id)
+setButtonPopup(false)
+}
 
 
   return ( 
@@ -99,10 +143,22 @@ const playPreviousLesson= () =>  {
   
     <div className="App">
       <header className="Header">
-      <h1>{courses.name}</h1>
-     {/* {  coursesList.map( course => {
-            return <h1>{course.name}</h1>
-          })}  */}
+      
+     
+      {/* <h1>{currentLesson.assignment}</h1> */}
+        {/* {courses.map(lesson => {
+             if(lesson.id == IdFromURL) 
+                 return <h2>{lesson.name}}</h2>} */}
+
+
+                 { courses.map(lesson => { 
+                  if(lesson.id == IdFromURL) 
+                     return <h1>{lesson.name}</h1>
+                     
+              
+            
+               })}
+
 
       </header> 
       <div className="lessons">
@@ -155,6 +211,7 @@ const playPreviousLesson= () =>  {
             {/* second try */}
           { courses.map(lesson => { 
              if(lesson.id == IdFromURL) 
+                // {setsSelectedCourse(lesson)}
                 return <h2>{lesson.lessons.map((name) => 
                 <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
          
@@ -200,9 +257,15 @@ const playPreviousLesson= () =>  {
       });
     } */}
     </div>
-    <Popup trigger={buttonPopup}>
-      <h3>hello</h3>
-      <p>hello this is popup</p>
+    
+    <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+      
+      <h3>לפני שעוברים לשיעור הבא יש לבצע מטלה</h3>
+          {console.log("popup message")}
+
+           <p>{currentLesson.assignment}</p>
+           <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
+           
     </Popup>
     </div>  
 
