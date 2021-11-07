@@ -1,6 +1,6 @@
 export class API {
     static loginUser(body){ 
-        return fetch(`http://127.0.0.1:8000/auth/`, {
+        return fetch(`https://yarintz.pythonanywhere.com/auth/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -11,7 +11,7 @@ export class API {
 
         static registerUser(body){ 
             console.log(body)
-            return fetch(`http://127.0.0.1:8000/main/users/`, {
+            return fetch(`https://yarintz.pythonanywhere.com/main/users/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ export class API {
             }
         static displayCourses(){ 
                 console.log("inside displayCourses fun")
-                return fetch(`http://127.0.0.1:8000/main/courses/`, {
+                return fetch(`https://yarintz.pythonanywhere.com/main/courses/`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ export class API {
                 }  
                 static getNextLesson(num){ 
                     console.log("inside getNextLesson fun")
-                    return fetch(`http://127.0.0.1:8000/main/lessons/${num}/`, {
+                    return fetch(`https://yarintz.pythonanywhere.com/main/lessons/${num}/`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ export class API {
                 static getPreviousLesson(num){ 
                     console.log("inside getPreviousLesson fun")
                     console.log(num)
-                    return fetch(`http://127.0.0.1:8000/main/lessons/${num}/`, {
+                    return fetch(`https://yarintz.pythonanywhere.com/main/lessons/${num}/`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ export class API {
 
                 static getCurrentCourse(numOfCourse){ 
                     console.log("inside displayCourses fun")
-                    return fetch(`http://127.0.0.1:8000/main/courses/${numOfCourse}/`, {
+                    return fetch(`https://yarintz.pythonanywhere.com/main/courses/${numOfCourse}/`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
