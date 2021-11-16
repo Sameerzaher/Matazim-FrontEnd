@@ -25,7 +25,8 @@ const [currentLesson, setCurrentLesson] = useState([]);
 const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k'); 
 const[buttonPopup, setButtonPopup ] = useState(false); 
 const lessonsList =[];
-
+var numOfLessons = 0;
+// const [lessonNum, setLessonNum] = useState([0]);
 
 
 
@@ -70,7 +71,6 @@ const displayLessons = (lesson) =>{
   console.log("lesson id is: ",lesson.id)
   setLessonsNumber(lesson.id-1)
   setCurrentLesson(lesson)
-  console.log("qqqqqqqqqqqqqqq")
   console.log("after: lesson number is: ", lessonNumber)
   //console.log(currentLesson)
  // console.log(currentLesson.assignment)
@@ -104,6 +104,13 @@ const displayLessons = (lesson) =>{
 
 const playNextLesson= () =>  {
   console.log("in next lesoon fun. next lesson number is: ", lessonNumber+1);
+  console.log("lesson number is: ", lessonNumber);
+  console.log(lessonsList)
+//   var len = 2;
+//  lessonsList.map(id => {return len=len+1} )
+
+  console.log("lesson list.length is:", lessonsList[0].length);
+ {lessonsList[0]  ?  lessonNumber ===  lessonsList[0].length  ?console.log("1") :console.log("2") :console.log("3") }
   //if there is ann assignmnent for these lesson - display it on a popup message. if there is no assignment - proceed to next lesson
     // if (currentLesson.assignment != "null"){
     // {lessonsList.map(lesson =>{
@@ -135,6 +142,7 @@ const playNextLesson= () =>  {
 
 const playPreviousLesson= () =>  {
   console.log("in previous. next lesson number is:", lessonNumber-1);
+  console.log("lesson number is: ", lessonNumber);
   {lessonsList.map(lesson => {
     return setUrl(lesson[lessonNumber-2].link), setCurrentLesson(lesson[lessonNumber-2])
     // console.log(lesson[4].link);
@@ -218,19 +226,42 @@ const proceedToNextLesson= () =>  {
         })
           })} */}
         </div>
+
+        <div>
+           {/*  display the lessons for the chosen course - working*/ }
+          { courses.map(lesson => { 
+             if(lesson.id == IdFromURL){
+                numOfLessons=lesson.lessons.length;
+                {console.log("num of lesson is: ",numOfLessons )}
+                {lessonsList.push(lesson.lessons)}
+                // {setsSelectedCourse(lesson)}
+                return <h2>{lesson.lessons.map((name) => 
+                <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
+                )}</h2> 
+                } 
+          })}
+         
+</div>
+
         <div>
           <ReactPlayer trigger={url} controls url={url} width='70%'
           height='220%'/><br/>
           {console.log("lessonsList")}
           {console.log(lessonsList)}
-          {/* {console.log(url)} */}
+          {/* {numOfLessons = lessonsList.length > 0 ? lessonsList[0].length: '0'} */}
           {/* <div className="prevAndNext"> */}
-            <button className="prevAndNext" onClick={playNextLesson} >השיעור הבא</button>
-            {/* <button style={{display : lessonNumber === lessonsList.length ? "none": "block"}} className="prevAndNext" onClick={playNextLesson} >השיעור הבא</button> */}
-            <button className="prevAndNext" onClick={playPreviousLesson}>השיעור הקודם</button><br/>
+            {/* <button className="prevAndNext" onClick={playNextLesson} >השיעור הבא</button> */}
+            {/*lessonsList[0] &&    lessonsList[0].length*/}
+           
+              
+           
+            {/* <button className="prevAndNext" style={{display : lessonNumber ===  lessonsList[0].length  ? "": "none"}}  onClick={playNextLesson} >השיעור הבא</button>  */}
+            <button className="prevAndNext" style={{display : lessonNumber ===  numOfLessons  ? "none": ""}}  onClick={playNextLesson} >השיעור הבא</button> 
+            {/* <button className="prevAndNext" style={{display : lessonsList[0]!=null  &&  lessonNumber ===  lessonsList[0].length  ? "none": ""}}  onClick={playNextLesson} >השיעור הבא</button>  */}
+            <button className="prevAndNext" style={{display : lessonNumber ===  0  ? "none": ""}} onClick={playPreviousLesson}>השיעור הקודם</button><br/>
      
         </div>
-       
+
           {/* display as buttons all the lessons of the selected course  */}
         {/* { courses.map(lesson => {
             return <h2>{lesson.lessons.map((name) => 
@@ -238,25 +269,7 @@ const proceedToNextLesson= () =>  {
               //<button onClick={displayLessons(name.name)}>{name.name} </button>
             )}</h2>
         })} */}
- <div>
-           {/* display the lessons for the chosen course - working!*/}
-           {/* { courses.map(lesson => {
-            return <h2>{lesson.lessons.map((name) => 
-             <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
-              //<button onClick={displayLessons(name.name)}>{name.name} </button>
-            )}</h2>
-        })} */}
-            {/* second try */}
-          { courses.map(lesson => { 
-             if(lesson.id == IdFromURL){
-                {lessonsList.push(lesson.lessons)}
-                // {setsSelectedCourse(lesson)}
-                return <h2>{lesson.lessons.map((name) => 
-                <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
-                )}</h2> 
-                }
-          })}
-</div>        
+        
 
 
            {/* <button onClick={() => setUrl('https://youtu.be/i9-HWYsrh_k')} >שיעור 1</button><br/>
