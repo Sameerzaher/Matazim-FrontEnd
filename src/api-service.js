@@ -79,7 +79,7 @@ export class API {
                         //body: JSON.stringify( body )
                     }).then( resp => resp.json())
                     // .then( resp => console.log(resp))
-                    }           
+                    }     
                     static loginUser(body){ 
                         return fetch(`http://127.0.0.1:8000/auth/`, {
                             method: 'POST',

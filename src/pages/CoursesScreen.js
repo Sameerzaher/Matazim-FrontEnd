@@ -22,7 +22,8 @@ const [lessons, setLessons] = useState([]);
 const [lessonNumber, setLessonsNumber] = useState([0]);
 const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
-const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k'); 
+const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k');
+// const[url, setUrl ] = useState();  
 const[buttonPopup, setButtonPopup ] = useState(false); 
 const lessonsList =[];
 var numOfLessons = 0;
@@ -36,15 +37,26 @@ var numOfLessons = 0;
   API.displayCourses()
       .then( resp => setCourses(resp))
       .catch( error => console.log(error)) 
+      //.then(setUrl(courses[0].lessons[0].link)) 
     // API.getCurrentCourse(IdFromURL)
     //   .then( resp => setCourses(resp))
     //   .catch( error => console.log(error))
   API.getLessons()
       .then( resp => setLessons(resp))
-      .catch( error => console.log(error))
- 
-      
+      .catch( error => console.log(error)) 
+       
 }, [])
+
+// const setFirstUrl= () =>  {
+//   console.log("courses[0]")
+//   console.log(courses[0])
+//   //setUrl(courses[0].lessons[0].link)  .lessons[0].link
+// }
+// useEffect(() =>{ 
+//   console.log("please work: ")
+//   console.log(courses[0].lessons[0].link)  
+// }, [courses.length > 1])
+
 ////////////////////////////////try
 // useEffect(() =>{ 
 //   console.log("lessonNumberrrrr")
@@ -64,16 +76,14 @@ var numOfLessons = 0;
 
 
 const displayLessons = (lesson) =>{
-  //console.log("asdasd");
- // console.log(lesson.numOfLesson);
   setUrl(lesson.link)
   console.log("lesson number is: ", lessonNumber)
   console.log("lesson id is: ",lesson.id)
-  setLessonsNumber(lesson.id-1)
+  setLessonsNumber(lesson.numOfLesson)
+  //works for python course -> setLessonsNumber(lesson.id === 1? 1:lesson.id-1)
   setCurrentLesson(lesson)
   console.log("after: lesson number is: ", lessonNumber)
-  //console.log(currentLesson)
- // console.log(currentLesson.assignment)
+
 }
 // const playNextLesson= () =>  {
   
@@ -240,7 +250,7 @@ const proceedToNextLesson= () =>  {
                 )}</h2> 
                 } 
           })}
-         
+        
 </div>
 
         <div>
@@ -258,7 +268,7 @@ const proceedToNextLesson= () =>  {
             {/* <button className="prevAndNext" style={{display : lessonNumber ===  lessonsList[0].length  ? "": "none"}}  onClick={playNextLesson} >השיעור הבא</button>  */}
             <button className="prevAndNext" style={{display : lessonNumber ===  numOfLessons  ? "none": ""}}  onClick={playNextLesson} >השיעור הבא</button> 
             {/* <button className="prevAndNext" style={{display : lessonsList[0]!=null  &&  lessonNumber ===  lessonsList[0].length  ? "none": ""}}  onClick={playNextLesson} >השיעור הבא</button>  */}
-            <button className="prevAndNext" style={{display : lessonNumber ===  0  ? "none": ""}} onClick={playPreviousLesson}>השיעור הקודם</button><br/>
+            <button className="prevAndNext" style={{display : lessonNumber ===  1  ? "none": ""}} onClick={playPreviousLesson}>השיעור הקודם</button><br/>
      
         </div>
 
