@@ -15,7 +15,17 @@ const CoursesMainScreen = () => {
       const goToCourse= (course) =>  {
             console.log("in go to course")
             console.log(course.name)
-            window.location.href =`/CoursesScreen?id=${course.id}`;
+            console.log(course.lessons[0].link)
+            //  window.location.href =`/CoursesScreen?id=${course.id}`;
+            // <Link
+            //     to={
+            //         pathname: "/CoursesScreen",
+            //         state: course // your data array of objects
+            //     }
+            // >
+             //window.location.href = `/CoursesScreen(course)
+            window.location.href ='/CoursesScreen?id=' + course.id + "&link=" + course.lessons[0].link; 
+            // window.open("{{ url('/CoursesScreen?id=')}}");
       }
 return ( 
 
