@@ -2,28 +2,45 @@ import React, {useEffect, useState} from 'react';
 import ReactPlayer from 'react-player';
 import '../Courses.css';
 import { API } from '../api-service';
+//import {token} from '/Signin'; 
 // import ReactDom from 'react-dom';
 //import Popup from 'react-popup';
 import Popup from '../components/Popup';
-
-
+import { useCookies } from 'react-cookie';
+import Signin from '../pages/Signin'; 
 
 
 
 const CoursesScreen = () => {
+  const [token, setToken, deleteToken] = useCookies(['mr-token']);
+  // const user = parseJwt(token['mr-token']);
+
+    
+
+  
+//   render() 
+//     const { state } = this.props.location
+//     return (
+//       console.log(state)
+//     )
+  
 const search = window.location.search; // returns the URL query String
 const params = new URLSearchParams(search); 
-const IdFromURL = params.get('id');  
+const IdFromURL = params.get('id');
+const linkFromURL = params.get('link');
+// const courseFromUrl = params.get('course');   
 console.log("now"); 
-console.log(IdFromURL); 
+console.log(IdFromURL);
+console.log(linkFromURL);
+
+// console.log(courseFromUrl); 
 const [courses, setCourses] = useState([]);
-const [selectedCourse, setsSelectedCourse] = useState([]);
+const [userLessons, setUserLessons] = useState([]);
 const [lessons, setLessons] = useState([]);
-const [lessonNumber, setLessonsNumber] = useState([0]);
+const [lessonNumber, setLessonsNumber] = useState([1]);
 const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
-const[url, setUrl ] = useState('https://youtu.be/i9-HWYsrh_k');
-// const[url, setUrl ] = useState();  
+const[url, setUrl ] = useState(linkFromURL);  
 const[buttonPopup, setButtonPopup ] = useState(false); 
 const lessonsList =[];
 var numOfLessons = 0;
@@ -33,20 +50,28 @@ var numOfLessons = 0;
 
 
 //const displayCourses = () =>  {
-  useEffect(() =>{ 
+  useEffect(() =>{
+  var username = Signin.username
+  console.log("username is:",username)
+  setLessonsNumber(1) 
   API.displayCourses()
       .then( resp => setCourses(resp))
       .catch( error => console.log(error)) 
-      //.then(setUrl(courses[0].lessons[0].link)) 
+      //.then(getFirstLesson(courses)) 
     // API.getCurrentCourse(IdFromURL)
     //   .then( resp => setCourses(resp))
     //   .catch( error => console.log(error))
   API.getLessons()
       .then( resp => setLessons(resp))
       .catch( error => console.log(error)) 
-       
+  API.getUserLessons()
+    .then( resp => setUserLessons(resp))
+    .catch( error => console.log(error)) 
 }, [])
 
+
+
+//console.log(parseJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'))
 // const setFirstUrl= () =>  {
 //   console.log("courses[0]")
 //   console.log(courses[0])
@@ -57,25 +82,18 @@ var numOfLessons = 0;
 //   console.log(courses[0].lessons[0].link)  
 // }, [courses.length > 1])
 
-////////////////////////////////try
-// useEffect(() =>{ 
-//   console.log("lessonNumberrrrr")
-//   console.log(lessonNumber)
-//    API.getNextLesson(lessonNumber)
-//     .then( resp => setCurrentLesson(resp))
-//     //.then(console.log(currentLesson))
-//     .catch( error => console.log(error)) 
-//    // console.log(currentLesson)
-// setUrl(currentLesson.link)
-// //setLessonsNumber(currentLesson.numOfLesson) 
-// // setLessonsNumber(lessonNumber+1)
-// setLessonsNumber(currentLesson.id);
-//  // console.log(lessonNumber)
-// }, [lessonNumber])
-///////////////////////////////end try
-
+// const getFirstLesson = (courses) =>{
+//   console.log("in first lesson")
+//   var firstLesson = courses[0].lessons[0]
+//   console.log("the first lesson is: ",firstLesson)
+// }
 
 const displayLessons = (lesson) =>{
+  console.log("in display lesson: ")
+  //console.log(parseJwt(token['mr-token']))
+  //console.log(userLessons[0].user)
+  console.log(token.User)
+  console.log(token['mr-token'].User)
   setUrl(lesson.link)
   console.log("lesson number is: ", lessonNumber)
   console.log("lesson id is: ",lesson.id)
@@ -85,30 +103,7 @@ const displayLessons = (lesson) =>{
   console.log("after: lesson number is: ", lessonNumber)
 
 }
-// const playNextLesson= () =>  {
-  
-//   if (currentLesson.assignment != "null"){
-//     console.log(currentLesson.assignment);
-//     setButtonPopup(true);
-//   }
-//   else{
-//     console.log("there is no assignment");
-//     console.log(currentLesson.assignment);
-  
-//   console.log(lessonNumber)
-//   console.log(lessonNumber+1)
-//   setLessonsNumber(lessonNumber+1 ,() => {console.log(lessonNumber);});
-//  // console.log(lessonNumber)
-//   API.getNextLesson(lessonNumber+1)
-//       .then( resp => setCurrentLesson(resp))
-//       .then(console.log(currentLesson))
-//       .catch( error => console.log(error)) 
-//       console.log(currentLesson)
-//   setUrl(currentLesson.link)
-//   //setLessonsNumber(currentLesson.numOfLesson) 
-//   // setLessonsNumber(lessonNumber+1)
-//   setLessonsNumber(currentLesson.id)
-// }}
+
 
 
 
@@ -116,6 +111,8 @@ const playNextLesson= () =>  {
   console.log("in next lesoon fun. next lesson number is: ", lessonNumber+1);
   console.log("lesson number is: ", lessonNumber);
   console.log(lessonsList)
+  // console.log("courses[0]")
+  // console.log(courses[0].lessons[0])
 //   var len = 2;
 //  lessonsList.map(id => {return len=len+1} )
 

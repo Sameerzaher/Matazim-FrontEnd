@@ -19,8 +19,9 @@ function Signin(){
 
     const loginClicked = () =>  {
         API.loginUser({username, password})
+            //.then( resp => console.log(resp.username))
             .then( resp => setToken('mr-token', resp.token))
-            .catch( error => console.log(error))     
+            //.catch( error => console.log(error))     
     }
     const registerClicked = () =>  {
         API.registerUser({username, password})
@@ -52,3 +53,4 @@ function Signin(){
 
 }
 export default Signin;
+

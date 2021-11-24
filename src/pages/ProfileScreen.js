@@ -1,9 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
+import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
 const axios = require('axios');
+/*const ProfileScreen = () => {
+    const [token, setToken, deleteToken] = useCookies(['mr-token']);
 
-
+    const [user,setUser] = useState([]);
+    useEffect(()=>{
+        API.dis
+    })
+}
+*/
 class ProfileScreen extends React.Component {
     constructor(props){
         super(props);
