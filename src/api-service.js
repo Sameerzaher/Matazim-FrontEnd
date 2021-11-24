@@ -2,9 +2,9 @@ import React from "react"
 const BASE_URL = 'https://yarintz.pythonanywhere.com';
 const LOCAL_URL = 'http://127.0.0.1:8000';
 export class API extends React.Component{
-   /* static DisplayUser(body){ 
+/*static DisplayUser(body){ 
         console.log(body)
-        return fetch(`http://127.0.0.1:8000/main/users/21/`, {
+        return fetch(`${LOCAL_URL}/main/users/21/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -12,8 +12,28 @@ export class API extends React.Component{
             body: JSON.stringify( body )
         }).then( resp => resp.json())
         }
+        */
 
-*/
+static UpdateUser(token, id, data){ 
+    return fetch(`${BASE_URL}/main/users/${id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        body: JSON.stringify( data )
+    }).then( resp => resp.json())
+    }
+static UpdateUser(token, id, data){ 
+        return fetch(`${LOCAL_URL}/main/users/${id}/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            body: JSON.stringify( data )
+        }).then( resp => resp.json())
+        }   
     static loginUser(body){ 
         return fetch(`${BASE_URL}/auth/`, {
             method: 'POST',
