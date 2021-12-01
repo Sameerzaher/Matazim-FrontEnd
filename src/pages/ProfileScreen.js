@@ -2,16 +2,27 @@ import React, {useEffect, useState} from 'react';
 import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
+import Signin from '../pages/Signin'; 
+
 const axios = require('axios');
-/*const ProfileScreen = () => {
+const ProfileScreen = () => {
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
 
     const [user,setUser] = useState([]);
     useEffect(()=>{
-        API.dis
+        var username = Signin.username
+        console.log("username is:",username)
+        API.getUserDetails()
+            
+
     })
+    return(
+        <div className="App">
+      <header className="Header"></header>
+      </div>
+    )
 }
-*/
+ /*
 class ProfileScreen extends React.Component {
     constructor(props){
         super(props);
@@ -46,21 +57,14 @@ class ProfileScreen extends React.Component {
                 <h1>User Profile</h1>
                 <Form className="form">     
         <p>{this.state.msg}</p>
-            
-       
-       
-
       <Form.Group controlId="formCategory1">
         <Form.Label>Username:</Form.Label>
-        <Form.Control type="text" defaultValue={this.state.username}/>
-      
+        <Form.Control type="text" defaultValue={this.state.username}/>     
       </Form.Group>
       <Form.Group controlId="formCategory2">
         <Form.Label>Email:</Form.Label>
-        <Form.Control type="email" defaultValue={this.state.email} />
-      
+        <Form.Control type="email" defaultValue={this.state.email} />     
       </Form.Group>
-     
       <Form.Group controlId="formCategory3">
         <Form.Label>First Name:</Form.Label>
         <Form.Control type="text" name="firstname" onChange={this.changefirstname}/>
@@ -85,5 +89,5 @@ class ProfileScreen extends React.Component {
     
 
 }
-
+*/
 export default ProfileScreen;
