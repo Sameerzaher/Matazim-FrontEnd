@@ -9,7 +9,7 @@ function Popup(props) {
                 <button className="close-btn" onClick={() => props.setTrigger(false)}>סגור</button>
                 {props.children }
                 {/* <button onClick={() => props.proceedToNextLesson}>שמור והמשך לשיעור הבא</button> */}
-                <input type = "text"></input>
+                {/* <input type = "text"></input> */}
             </div>
         </div> 
     ) : "";

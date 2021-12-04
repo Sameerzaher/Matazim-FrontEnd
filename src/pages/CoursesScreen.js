@@ -13,6 +13,7 @@ import Signin from '../pages/Signin';
 
 const CoursesScreen = () => {
   const [token, setToken, deleteToken] = useCookies(['mr-token']);
+  console.log("token is: ", token['mr-token'])
   // const user = parseJwt(token['mr-token']);
 
     
@@ -42,9 +43,12 @@ const [currentLesson, setCurrentLesson] = useState([]);
 //the url from youtube for every lesson. changed when the user choose another lesson. the default is for the first lesson. 
 const[url, setUrl ] = useState(linkFromURL);  
 const[buttonPopup, setButtonPopup ] = useState(false); 
+const[notePopup, setNotePopup ] = useState(false);
+const[notes, setNotes ] = useState();
 const lessonsList =[];
 var numOfLessons = 0;
-// const [lessonNum, setLessonNum] = useState([0]);
+
+//const [playing, setPlaying] = useState()
 
 
 
@@ -67,6 +71,9 @@ var numOfLessons = 0;
   API.getUserLessons()
     .then( resp => setUserLessons(resp))
     .catch( error => console.log(error)) 
+    // API.getUserNotes()
+    // .then( resp => setNotes(resp))
+    // .catch( error => console.log(error))
 }, [])
 
 
@@ -91,9 +98,9 @@ var numOfLessons = 0;
 const displayLessons = (lesson) =>{
   console.log("in display lesson: ")
   //console.log(parseJwt(token['mr-token']))
-  //console.log(userLessons[0].user)
-  console.log(token.User)
-  console.log(token['mr-token'].User)
+  console.log(userLessons)
+  //console.log(token.User)
+  //console.log(token['mr-token'].User)
   setUrl(lesson.link)
   console.log("lesson number is: ", lessonNumber)
   console.log("lesson id is: ",lesson.id)
@@ -172,7 +179,7 @@ const proceedToNextLesson= () =>  {
   })}
   setLessonsNumber(lessonNumber+1)
   setButtonPopup(false)
-  
+}
 // console.log("lessonNumber+2")
 // API.getNextLesson(lessonNumber+1)
 //     .then( resp => setCurrentLesson(resp))
@@ -183,11 +190,34 @@ const proceedToNextLesson= () =>  {
 // setUrl(currentLesson.link)
 // setLessonsNumber(currentLesson.id)
 // 
+const openNotes= () =>  {
+  //{setPlaying(false)}
+  console.log(" inside openNotes");
+  // API.getUserNotes(token['mr-token'])
+  // API.getUserNotes('b759d09356a6daeb3becf6bcd246c3ef05e87782')
+  setNotes('')
+  API.getUserNotes(token['mr-token'], lessonNumber)
+    // .then( console.log("resp.results[0].notes"))
+    // .then( resp => console.log(resp))
+    .then( resp => setNotes(resp.results[0].notes))
+    .catch( error => console.log(error))
+  setNotePopup(true)
+}
+const saveNotes= () =>  {
+  // {lessonsList.map(lesson => {
+  //   return setUrl(lesson[lessonNumber].link), setCurrentLesson(lesson[lessonNumber])
+  // })}
+  
+ console.log("the new note is:", notes)
+ console.log("lesson number is:", lessonNumber)
+ API.updateUserNotes(token['mr-token'], notes, lessonNumber)
+ setNotePopup(false)
+}
+const ref = player => {
+  player = player
 }
 
-
   return ( 
-
 
   
     <div className="App">
@@ -204,12 +234,14 @@ const proceedToNextLesson= () =>  {
                   if(lesson.id == IdFromURL) 
                      return <h1>{lesson.name}</h1>
                      
+                  
               
             
                })}
 
 
       </header> 
+      <button onClick={openNotes}>הערות</button>
       <div className="lessons">
       <div>
         {/* //working */}
@@ -233,7 +265,7 @@ const proceedToNextLesson= () =>  {
         })
           })} */}
         </div>
-
+       
         <div>
            {/*  display the lessons for the chosen course - working*/ }
           { courses.map(lesson => { 
@@ -249,8 +281,10 @@ const proceedToNextLesson= () =>  {
           })}
         
 </div>
+              
 
         <div>
+
           <ReactPlayer trigger={url} controls url={url} width='70%'
           height='220%'/><br/>
           {console.log("lessonsList")}
@@ -259,7 +293,7 @@ const proceedToNextLesson= () =>  {
           {/* <div className="prevAndNext"> */}
             {/* <button className="prevAndNext" onClick={playNextLesson} >השיעור הבא</button> */}
             {/*lessonsList[0] &&    lessonsList[0].length*/}
-           
+            
               
            
             {/* <button className="prevAndNext" style={{display : lessonNumber ===  lessonsList[0].length  ? "": "none"}}  onClick={playNextLesson} >השיעור הבא</button>  */}
@@ -318,17 +352,40 @@ const proceedToNextLesson= () =>  {
     </div>
     
     <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-      
       <h3>לפני שעוברים לשיעור הבא יש לבצע מטלה</h3>
           {console.log("popup message")}
           {console.log(currentLesson.assignment)}
           <p>{currentLesson.assignment}</p>
           <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
-           
+          <input type = "text"></input>
     </Popup>
+    <Popup trigger={notePopup} setTrigger={setNotePopup}>
+    
+    {/* {console.log(this.player.getCurrentTime())} */}
+      <h3>אלו ההערות שלך עבור שיעור זה</h3>
+          {console.log("popup message 2")}
+          {console.log(notes)}
+          {/* {console.log(notes.results && notes.results.notes)} */}
+          {console.log("end of popup message 2")}
+          {/* <p>{notes}</p> */}
+        
+          <textarea
+          name = "notesTA"
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          rows={5}
+          cols={50}
+        />
+        <br/>
+        <button onClick={saveNotes}>שמור</button>
+        
+    </Popup>
+   
     </div>  
 
   );
 };
+
+
 
 export default CoursesScreen;

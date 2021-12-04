@@ -234,4 +234,39 @@ static UpdateUser(token, id, data){
                                         
                                               
                                         }  
+                static getUserNotes(token, data){ 
+                    console.log("im in getUserNotes")
+                  //  http://127.0.0.1:8000/main/userLessons/1/getUserLessons/                             
+                    return fetch(`${LOCAL_URL}/main/userLessons/1/getUserLessons/`, {
+                        method: 'POST',
+                        headers: {
+                        //   'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                          'Authorization': `Token ${token}` 
+                             },
+                             body: JSON.stringify({'lesson' : data})  
+                            // body: JSON.stringify({data})  
+                            // params: {
+                            //     'lesson': '4'
+                            //   }                 
+                        })
+                          .then( resp => resp.json())
+                        //.then( resp => console.log("eewrwerrewreerwewfaj"))
+                       }  
+                       static updateUserNotes(token, data, numOfLesson){ 
+                        console.log("im in getUserNotes")
+                      //  http://127.0.0.1:8000/main/userLessons/1/getUserLessons/                             
+                        return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                            method: 'POST',
+                            headers: {
+                            
+                              'Content-Type': 'application/json',
+                              'Authorization': `Token ${token}` 
+                                 },
+                                 body: JSON.stringify({'notes' : data})  
+                                    
+                            })
+                              .then( resp => resp.json())
+                            //.then( resp => console.log("eewrwerrewreerwewfaj"))
+                           }  
     }
