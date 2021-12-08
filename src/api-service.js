@@ -256,7 +256,7 @@ static UpdateUser(token, id, data){
                        static updateUserNotes(token, data, numOfLesson){ 
                         console.log("im in getUserNotes")
                       //  http://127.0.0.1:8000/main/userLessons/1/getUserLessons/                             
-                        return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                         return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
                             method: 'POST',
                             headers: {
                             
@@ -269,4 +269,33 @@ static UpdateUser(token, id, data){
                               .then( resp => resp.json())
                             //.then( resp => console.log("eewrwerrewreerwewfaj"))
                            }  
+
+                           static getUserAnswer(token, data){ 
+                            console.log("im in getUserAnswer")                         
+                            return fetch(`${LOCAL_URL}/main/userLessons/1/getUserLessons/`, {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Token ${token}` 
+                                     },
+                                     body: JSON.stringify({'lesson' : data})  
+              
+                                })
+                                  //.then( resp => console.log(resp))
+                                  .then( resp => resp.json())
+                            
+                               }  
+                               static updateUserAnswer(token, data, numOfLesson){                             
+                                return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                                    method: 'POST',
+                                    headers: {
+                                    
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Token ${token}` 
+                                         },
+                                         body: JSON.stringify({'answer' : data})  
+                                            
+                                    })
+                                      .then( resp => resp.json())
+                                   }  
     }
