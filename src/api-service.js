@@ -1,4 +1,4 @@
-import React from "react"
+ import React from "react"
 const BASE_URL = 'https://yarintz.pythonanywhere.com';
 const LOCAL_URL = 'http://127.0.0.1:8000';
 export class API extends React.Component{

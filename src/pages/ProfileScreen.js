@@ -3,7 +3,7 @@ import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
 import Signin from '../pages/Signin'; 
-
+import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
 const ProfileScreen = () => {
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
@@ -18,8 +18,27 @@ const ProfileScreen = () => {
     })
     return(
         <div className="App">
-      <header className="Header"></header>
-      </div>
+        <header className="Header">Profile Screen</header>
+        <div className="Username">
+        User Name: 
+        </div>
+        <div>
+        First Name:
+        </div>
+        <div>
+        Last Name:
+        </div>
+        <div>
+        Email:
+        </div>
+        <div>
+        Age:
+        </div>
+        <div>
+        Hobbis:
+        </div>
+        <button onClick={UpdateUserDetails}>Update</button>
+        </div>
     )
 }
  /*
