@@ -46,6 +46,7 @@ const[buttonPopup, setButtonPopup ] = useState(false);
 const[notePopup, setNotePopup ] = useState(false);
 const[notes, setNotes ] = useState();
 const[answer, setAnswer ] = useState();
+const[userLastLesson, setUserLastLesson ] = useState(1);
 const lessonsList =[];
 var numOfLessons = 0;
 
@@ -63,22 +64,16 @@ var numOfLessons = 0;
       .then( resp => setCourses(resp))
       //.then( resp => setCurrentLesson(resp[0].lessons[0]))
       .catch( error => console.log(error)) 
-
-      //.then(getFirstLesson(courses)) 
-    // API.getCurrentCourse(IdFromURL)
-    //   .then( resp => setCourses(resp))
-    //   .catch( error => console.log(error))
   API.getLessons()
       .then( resp => setLessons(resp))
       .catch( error => console.log(error)) 
   API.getUserLessons()
     .then( resp => setUserLessons(resp))
     .catch( error => console.log(error)) 
-    // API.getUserNotes()
-    // .then( resp => setNotes(resp))
-    // .catch( error => console.log(error))
-    
-   
+  API.getUserLastLesson(token['mr-token'],IdFromURL)
+    .then( resp => setUserLastLesson(resp.results[0].numOfLesson))
+    .catch( error => console.log(error))
+
 }, [])
 
 
@@ -101,20 +96,22 @@ var numOfLessons = 0;
 // }
 
 const displayLessons = (lesson) =>{
-  console.log("in display lesson: ")
-  console.log(lesson)
-  //console.log(parseJwt(token['mr-token']))
-  console.log(userLessons)
-  //console.log(token.User)
-  //console.log(token['mr-token'].User)
-  setUrl(lesson.link)
-  console.log("lesson number is: ", lessonNumber)
-  console.log("lesson id is: ",lesson.id)
-  setLessonsNumber(lesson.numOfLesson)
-  //works for python course -> setLessonsNumber(lesson.id === 1? 1:lesson.id-1)
-  setCurrentLesson(lesson)
-  console.log("after: lesson number is: ", lessonNumber)
-
+  if(lesson.numOfLesson<=userLastLesson){
+    console.log("in display lesson: ")
+    console.log("last lesson is: ",userLastLesson)
+    console.log(lesson)
+    //console.log(parseJwt(token['mr-token']))
+    console.log(userLessons)
+    //console.log(token.User)
+    //console.log(token['mr-token'].User)
+    setUrl(lesson.link)
+    console.log("lesson number is: ", lessonNumber)
+    console.log("lesson id is: ",lesson.id)
+    setLessonsNumber(lesson.numOfLesson)
+    //works for python course -> setLessonsNumber(lesson.id === 1? 1:lesson.id-1)
+    setCurrentLesson(lesson)
+    console.log("after: lesson number is: ", lessonNumber)
+  }
 }
 
 
@@ -161,6 +158,10 @@ const playNextLesson= () =>  {
       setButtonPopup(true);
   }
   else{
+    if(userLastLesson==lessonNumber){
+      API.updateUserCourse(token['mr-token'], userLastLesson+1, IdFromURL)
+      setUserLastLesson(userLastLesson+1)
+      }
     {lessonsList.map(lesson => {
       {console.log("inside next lesson")}
       {console.log(lesson[lessonNumber])}
@@ -198,6 +199,10 @@ const playPreviousLesson= () =>  {
 }
 //proceed to the next lesson of the course after the popup message
 const proceedToNextLesson= () =>  {
+  if(userLastLesson==lessonNumber){
+    API.updateUserCourse(token['mr-token'], userLastLesson+1, IdFromURL)
+    setUserLastLesson(userLastLesson+1)
+    }
   console.log(" inside fun proceed");
   if(currentLesson.id)
     API.updateUserAnswer(token['mr-token'], answer, currentLesson.id)
@@ -307,9 +312,18 @@ else
                 {console.log("num of lesson is: ",numOfLessons )}
                 {lessonsList.push(lesson.lessons)}
                 // {setsSelectedCourse(lesson)}
-                return <h2>{lesson.lessons.map((name) => 
-                <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
-                )}</h2> 
+                return <h2>{lesson.lessons.map((name) =>
+                   //{if(name.numOfLesson<=userLastLesson){
+                      //<ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>}
+                  // else
+                  //   <ul class={"lessonsList"}> <li>{name.name + " (נעול)"} </li> </ul>
+                // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name + " (נעול)"} </li> </ul>
+                  <ul class={name.numOfLesson>userLastLesson? "coursesListBlocked" :name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}>
+                  <li onClick={() => displayLessons(name)}>
+                  {name.numOfLesson>userLastLesson?   name.name + " (נעול)":name.name } </li> </ul>
+                // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() =>  displayLessons(name)}>{  name.numOfLesson>userLastLesson? name.name + " (נעול)"}b:name.name } </li> </ul>
+             //}
+             )}</h2> 
                 } 
           })}
         

@@ -297,5 +297,34 @@ static UpdateUser(token, id, data){
                                             
                                     })
                                       .then( resp => resp.json())
-                                   }  
+                                   }
+                                   
+                                   static getUserLastLesson(token, numOfCourse){                                                       
+                                    return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/getUserCourses/`, {
+                                        method: 'POST',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Token ${token}` 
+                                             },
+                                            //  body: JSON.stringify({'course' : data})  
+                      
+                                        })
+                                          //.then( resp => console.log(resp))
+                                          .then( resp => resp.json())
+                                    
+                                       } 
+                                       
+                                       static updateUserCourse(token, data, numOfCourse){                             
+                                        return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/addUserCourses/`, {
+                                            method: 'POST',
+                                            headers: {
+                                            
+                                              'Content-Type': 'application/json',
+                                              'Authorization': `Token ${token}` 
+                                                 },
+                                                 body: JSON.stringify({'lesson' : data})  
+                                                    
+                                            })
+                                              .then( resp => resp.json())
+                                           }
     }
