@@ -45,6 +45,8 @@ const[url, setUrl ] = useState(linkFromURL);
 const[buttonPopup, setButtonPopup ] = useState(false); 
 const[notePopup, setNotePopup ] = useState(false);
 const[notes, setNotes ] = useState();
+const[answer, setAnswer ] = useState();
+const[userLastLesson, setUserLastLesson ] = useState(1);
 const lessonsList =[];
 var numOfLessons = 0;
 
@@ -60,20 +62,18 @@ var numOfLessons = 0;
   setLessonsNumber(1) 
   API.displayCourses()
       .then( resp => setCourses(resp))
+      //.then( resp => setCurrentLesson(resp[0].lessons[0]))
       .catch( error => console.log(error)) 
-      //.then(getFirstLesson(courses)) 
-    // API.getCurrentCourse(IdFromURL)
-    //   .then( resp => setCourses(resp))
-    //   .catch( error => console.log(error))
   API.getLessons()
       .then( resp => setLessons(resp))
       .catch( error => console.log(error)) 
   API.getUserLessons()
     .then( resp => setUserLessons(resp))
     .catch( error => console.log(error)) 
-    // API.getUserNotes()
-    // .then( resp => setNotes(resp))
-    // .catch( error => console.log(error))
+  API.getUserLastLesson(token['mr-token'],IdFromURL)
+    .then( resp => setUserLastLesson(resp.results[0].numOfLesson))
+    .catch( error => console.log(error))
+
 }, [])
 
 
@@ -96,19 +96,22 @@ var numOfLessons = 0;
 // }
 
 const displayLessons = (lesson) =>{
-  console.log("in display lesson: ")
-  //console.log(parseJwt(token['mr-token']))
-  console.log(userLessons)
-  //console.log(token.User)
-  //console.log(token['mr-token'].User)
-  setUrl(lesson.link)
-  console.log("lesson number is: ", lessonNumber)
-  console.log("lesson id is: ",lesson.id)
-  setLessonsNumber(lesson.numOfLesson)
-  //works for python course -> setLessonsNumber(lesson.id === 1? 1:lesson.id-1)
-  setCurrentLesson(lesson)
-  console.log("after: lesson number is: ", lessonNumber)
-
+  if(lesson.numOfLesson<=userLastLesson){
+    console.log("in display lesson: ")
+    console.log("last lesson is: ",userLastLesson)
+    console.log(lesson)
+    //console.log(parseJwt(token['mr-token']))
+    console.log(userLessons)
+    //console.log(token.User)
+    //console.log(token['mr-token'].User)
+    setUrl(lesson.link)
+    console.log("lesson number is: ", lessonNumber)
+    console.log("lesson id is: ",lesson.id)
+    setLessonsNumber(lesson.numOfLesson)
+    //works for python course -> setLessonsNumber(lesson.id === 1? 1:lesson.id-1)
+    setCurrentLesson(lesson)
+    console.log("after: lesson number is: ", lessonNumber)
+  }
 }
 
 
@@ -131,11 +134,34 @@ const playNextLesson= () =>  {
       // var first = lessonsList[0].name;
       // console.log(first);
       // console.log("first");
+      //if there is an assignment for this lesson
     if(lessonsList[0][lessonNumber-1].assignment !="null"){
-        console.log(currentLesson.assignment);
-        setButtonPopup(true);
+      console.log("need to be here");
+      console.log(currentLesson.assignment);
+      console.log("lesson number is: ", lessonNumber);
+      setAnswer('')
+
+      if(currentLesson.id){
+        API.getUserAnswer(token['mr-token'], currentLesson.id)
+        //.then( resp => console.log(resp))
+        .then( resp => setAnswer(resp.results[0].answer))
+        .catch( error => console.log(error))
+      }
+      else{
+        console.log("im in else")
+        API.getUserAnswer(token['mr-token'], params.get('firstLessonId'))
+        //.then( resp => console.log(resp))
+        .then( resp => setAnswer(resp.results[0].answer))
+        .catch( error => console.log(error))
+      }
+       
+      setButtonPopup(true);
   }
   else{
+    if(userLastLesson==lessonNumber){
+      API.updateUserCourse(token['mr-token'], userLastLesson+1, IdFromURL)
+      setUserLastLesson(userLastLesson+1)
+      }
     {lessonsList.map(lesson => {
       {console.log("inside next lesson")}
       {console.log(lesson[lessonNumber])}
@@ -173,7 +199,15 @@ const playPreviousLesson= () =>  {
 }
 //proceed to the next lesson of the course after the popup message
 const proceedToNextLesson= () =>  {
+  if(userLastLesson==lessonNumber){
+    API.updateUserCourse(token['mr-token'], userLastLesson+1, IdFromURL)
+    setUserLastLesson(userLastLesson+1)
+    }
   console.log(" inside fun proceed");
+  if(currentLesson.id)
+    API.updateUserAnswer(token['mr-token'], answer, currentLesson.id)
+  else
+    API.updateUserAnswer(token['mr-token'], answer, params.get('firstLessonId'))
   {lessonsList.map(lesson => {
     return setUrl(lesson[lessonNumber].link), setCurrentLesson(lesson[lessonNumber])
   })}
@@ -193,29 +227,34 @@ const proceedToNextLesson= () =>  {
 const openNotes= () =>  {
   //{setPlaying(false)}
   console.log(" inside openNotes");
-  // API.getUserNotes(token['mr-token'])
-  // API.getUserNotes('b759d09356a6daeb3becf6bcd246c3ef05e87782')
   setNotes('')
-  API.getUserNotes(token['mr-token'], lessonNumber)
-    // .then( console.log("resp.results[0].notes"))
-    // .then( resp => console.log(resp))
-    .then( resp => setNotes(resp.results[0].notes))
-    .catch( error => console.log(error))
+  console.log("lesson is:",currentLesson.id)
+  console.log("maybe that: ",  params.get('firstLessonId'))
+  if(currentLesson.id){
+    API.getUserNotes(token['mr-token'],currentLesson.id)
+      // .then( console.log("resp.results[0].notes"))
+      // .then( resp => console.log(resp))
+      .then( resp => setNotes(resp.results[0].notes))
+      .catch( error => console.log(error))
+  }
+  else{
+    console.log("im in else")
+    API.getUserNotes(token['mr-token'],params.get('firstLessonId'))
+      .then( resp => setNotes(resp.results[0].notes))
+      .catch( error => console.log(error))
+  }
   setNotePopup(true)
 }
-const saveNotes= () =>  {
-  // {lessonsList.map(lesson => {
-  //   return setUrl(lesson[lessonNumber].link), setCurrentLesson(lesson[lessonNumber])
-  // })}
-  
- console.log("the new note is:", notes)
- console.log("lesson number is:", lessonNumber)
- API.updateUserNotes(token['mr-token'], notes, lessonNumber)
+const saveNotes= () =>  { 
+if(currentLesson.id)
+  API.updateUserNotes(token['mr-token'], notes, currentLesson.id)
+else
+  API.updateUserNotes(token['mr-token'], notes, params.get('firstLessonId'))
  setNotePopup(false)
 }
-const ref = player => {
-  player = player
-}
+// const ref = player => {
+//   player = player
+// }
 
   return ( 
 
@@ -232,11 +271,9 @@ const ref = player => {
 
                  { courses.map(lesson => { 
                   if(lesson.id == IdFromURL) 
-                     return <h1>{lesson.name}</h1>
+                      return <h1>{lesson.name}</h1>
+                    //  return <h1>{currentLesson.id}</h1>
                      
-                  
-              
-            
                })}
 
 
@@ -267,16 +304,26 @@ const ref = player => {
         </div>
        
         <div>
-           {/*  display the lessons for the chosen course - working*/ }
+
+           {/*  display the lessons for the chosen course */ }
           { courses.map(lesson => { 
              if(lesson.id == IdFromURL){
                 numOfLessons=lesson.lessons.length;
                 {console.log("num of lesson is: ",numOfLessons )}
                 {lessonsList.push(lesson.lessons)}
                 // {setsSelectedCourse(lesson)}
-                return <h2>{lesson.lessons.map((name) => 
-                <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>
-                )}</h2> 
+                return <h2>{lesson.lessons.map((name) =>
+                   //{if(name.numOfLesson<=userLastLesson){
+                      //<ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>}
+                  // else
+                  //   <ul class={"lessonsList"}> <li>{name.name + " (נעול)"} </li> </ul>
+                // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name + " (נעול)"} </li> </ul>
+                  <ul class={name.numOfLesson>userLastLesson? "coursesListBlocked" :name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}>
+                  <li onClick={() => displayLessons(name)}>
+                  {name.numOfLesson>userLastLesson?   name.name + " (נעול)":name.name } </li> </ul>
+                // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() =>  displayLessons(name)}>{  name.numOfLesson>userLastLesson? name.name + " (נעול)"}b:name.name } </li> </ul>
+             //}
+             )}</h2> 
                 } 
           })}
         
@@ -356,8 +403,11 @@ const ref = player => {
           {console.log("popup message")}
           {console.log(currentLesson.assignment)}
           <p>{currentLesson.assignment}</p>
+          {console.log("answer is: ",answer)}
           <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
-          <input type = "text"></input>
+          <input type = "text" value={answer} 
+          onChange={e => setAnswer(e.target.value)}
+          ></input>
     </Popup>
     <Popup trigger={notePopup} setTrigger={setNotePopup}>
     

@@ -1,4 +1,4 @@
- import React from "react"
+import React from "react"
 const BASE_URL = 'https://yarintz.pythonanywhere.com';
 const LOCAL_URL = 'http://127.0.0.1:8000';
 export class API extends React.Component{
@@ -25,18 +25,31 @@ static DisplayUserInfo(token, id, data){
         body: JSON.stringify( data )
     }).then( resp => resp.json())  
 }*/
-static getUserDetails(props,id){
+static getUserDetails(id){
 
-    fetch(`${BASE_URL}/main/users/${id}`,{
+    return fetch(`${LOCAL_URL}/main/users/${id}`,{
         method: 'GET',
         headers: {  
             'Content-Type':'application/json',
            
         }
     }).then( resp => resp.json())
-    .then( res => props.UpdateUser(res))
-    .catch( error => console.log(error))
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
 } 
+/*
+static getUserDetails(props,id){
+
+    return fetch(`${BASE_URL}/main/users/${id}`,{
+        method: 'GET',
+        headers: {  
+            'Content-Type':'application/json',
+           
+        }
+    }).then( resp => resp.json())
+   // .then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+} */
 static UpdateUser(token, id, data){ 
     return fetch(`${BASE_URL}/main/users/${id}/`, {
         method: 'PUT',
@@ -256,7 +269,7 @@ static UpdateUser(token, id, data){
                        static updateUserNotes(token, data, numOfLesson){ 
                         console.log("im in getUserNotes")
                       //  http://127.0.0.1:8000/main/userLessons/1/getUserLessons/                             
-                        return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                         return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
                             method: 'POST',
                             headers: {
                             
@@ -269,4 +282,62 @@ static UpdateUser(token, id, data){
                               .then( resp => resp.json())
                             //.then( resp => console.log("eewrwerrewreerwewfaj"))
                            }  
+
+                           static getUserAnswer(token, data){ 
+                            console.log("im in getUserAnswer")                         
+                            return fetch(`${LOCAL_URL}/main/userLessons/1/getUserLessons/`, {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Token ${token}` 
+                                     },
+                                     body: JSON.stringify({'lesson' : data})  
+              
+                                })
+                                  //.then( resp => console.log(resp))
+                                  .then( resp => resp.json())
+                            
+                               }  
+                               static updateUserAnswer(token, data, numOfLesson){                             
+                                return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                                    method: 'POST',
+                                    headers: {
+                                    
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Token ${token}` 
+                                         },
+                                         body: JSON.stringify({'answer' : data})  
+                                            
+                                    })
+                                      .then( resp => resp.json())
+                                   }
+                                   
+                                   static getUserLastLesson(token, numOfCourse){                                                       
+                                    return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/getUserCourses/`, {
+                                        method: 'POST',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Token ${token}` 
+                                             },
+                                            //  body: JSON.stringify({'course' : data})  
+                      
+                                        })
+                                          //.then( resp => console.log(resp))
+                                          .then( resp => resp.json())
+                                    
+                                       } 
+                                       
+                                       static updateUserCourse(token, data, numOfCourse){                             
+                                        return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/addUserCourses/`, {
+                                            method: 'POST',
+                                            headers: {
+                                            
+                                              'Content-Type': 'application/json',
+                                              'Authorization': `Token ${token}` 
+                                                 },
+                                                 body: JSON.stringify({'lesson' : data})  
+                                                    
+                                            })
+                                              .then( resp => resp.json())
+                                           }
     }

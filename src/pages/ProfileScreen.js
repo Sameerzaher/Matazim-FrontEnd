@@ -6,24 +6,26 @@ import Signin from '../pages/Signin';
 import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
 const ProfileScreen = () => {
+
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
 
     const [user,setUser] = useState([]);
     useEffect(()=>{
         var username = Signin.username
         console.log("username is:",username)
-        API.getUserDetails()
-            
+        API.getUserDetails(21)
+         .then(resp => setUser(resp))  
 
-    })
+    }, [])
     return(
+
         <div className="App">
         <header className="Header">Profile Screen</header>
         <div className="Username">
-        User Name: 
+        User Name: {user.username}
         </div>
         <div>
-        First Name:
+        First Name: 
         </div>
         <div>
         Last Name:
