@@ -32,6 +32,12 @@ const logoutUser = () => {
             </NavLogo>
             <Bars />
             <NavMenu>
+            <NavLink to="/AboutusScreen" activeStyle>
+                    עלינו
+                </NavLink>
+            <NavLink to="/TeachersScreen" activeStyle>
+                    הדרכה
+                </NavLink>
             <NavLink to="/ProfileScreen" activeStyle>
                     פרופייל
                 </NavLink>
@@ -39,7 +45,7 @@ const logoutUser = () => {
                     פרויקטים
                 </NavLink> 
                 <NavLink to="/CoursesMainScreen" activeStyle>
-                    קורסים
+                    לֹמידה
                 </NavLink>
                 <NavLink to="/HomeScreen" activeStyle>
                     דף הבית

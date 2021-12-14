@@ -20,26 +20,26 @@ const ProfileScreen = () => {
     return(
 
         <div className="App">
-        <header className="Header">Profile Screen</header>
+        <header className="Header">דף פרופייל</header>
         <div className="Username">
-        User Name: {user.username}
+         {user.username}: שם משתמש 
         </div>
         <div>
-        First Name: 
+       :שם פרטי 
         </div>
         <div>
-        Last Name:
+        : שם משפחה
         </div>
         <div>
-        Email:
+        : דואר אלקטרוני 
         </div>
         <div>
-        Age:
+       : גיל
         </div>
         <div>
-        Hobbis:
+       : תחביבים
         </div>
-        <button onClick={UpdateUserDetails}>Update</button>
+        <button onClick={UpdateUserDetails}>עדכון פרטים</button>
         </div>
     )
 }
