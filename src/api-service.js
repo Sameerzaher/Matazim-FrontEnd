@@ -25,18 +25,47 @@ static DisplayUserInfo(token, id, data){
         body: JSON.stringify( data )
     }).then( resp => resp.json())  
 }*/
-static getUserDetails(props,id){
+// static getUserDetails(id){
 
-    fetch(`${BASE_URL}/main/users/${id}`,{
+//     return fetch(`${LOCAL_URL}/main/users/${id}`,{
+//         method: 'GET',
+//         headers: {  
+//             'Content-Type':'application/json',
+           
+//         }
+//     }).then( resp => resp.json())
+//     //.then( res => props.UpdateUser(res))
+//     //.catch( error => console.log(error))
+// } 
+
+
+
+static getUserDetails(token){
+
+    return fetch(`${LOCAL_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+} 
+/*
+static getUserDetails(props,id){
+    return fetch(`${BASE_URL}/main/users/${id}`,{
         method: 'GET',
         headers: {  
             'Content-Type':'application/json',
            
         }
     }).then( resp => resp.json())
-    .then( res => props.UpdateUser(res))
-    .catch( error => console.log(error))
-} 
+   // .then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+} */
 static UpdateUser(token, id, data){ 
     return fetch(`${BASE_URL}/main/users/${id}/`, {
         method: 'PUT',

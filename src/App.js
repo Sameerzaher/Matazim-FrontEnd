@@ -6,6 +6,8 @@ import CoursesScreen from './pages/CoursesScreen';
 import ProjectsScreen from './pages/ProjectsScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import CoursesMainScreen from './pages/CoursesMainScreen';
+import TeachersScreen from './pages/TeachersScreen';
+import AboutusScreen from './pages/AboutusScreen'
 import Signin from './pages/Signin'; 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
@@ -26,6 +28,8 @@ function App() {
         <Route path="/CoursesScreen" component={CoursesScreen} />
         <Route path="/ProjectsScreen" component={ProjectsScreen} />
         <Route path="/ProfileScreen" component={ProfileScreen} />
+        <Route path="/TeachersScreen" component={TeachersScreen} />
+        <Route path="/AboutusScreen" component={AboutusScreen} />
         <Route path="/Signin" component={Signin} />
         <Route path="/CoursesMainScreen" component={CoursesMainScreen} />
       </Switch>
