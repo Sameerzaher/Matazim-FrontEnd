@@ -3,46 +3,91 @@ import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
 import Signin from '../pages/Signin'; 
+import { useHistory } from "react-router-dom";
+
+import '../index.css';
 import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
-const ProfileScreen = () => {
 
+
+const ProfileScreen = () => {
+    const history = useHistory();
+    const handleRoute = () =>{ 
+        history.push("/UpdateUserDetails");
+      }
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
 
     const [user,setUser] = useState([]);
     useEffect(()=>{
-        var username = Signin.username
-        console.log("username is:",username)
-        API.getUserDetails(21)
-         .then(resp => setUser(resp))  
+        //var username = Signin.username
+        //console.log("username is:",username)
+        API.getUserDetails(token['mr-token'])
+         //.then(resp => console.log("resp is:", resp.results))
+         .then(resp => setUser(resp.results))  
+         .catch( error => console.log(error)) 
 
     }, [])
     return(
-
         <div className="App">
-        <header className="Header">דף פרופייל</header>
-        <div className="Username">
-         {user.username}: שם משתמש 
-        </div>
+        <header className="Header">דף פרופיל</header>
+        <div className="profile">
+            <div>
+        <h4>שם משתמש:</h4>
+         <p>{user.username}</p>
+        
+         <br/>
+
+         <h4>שם פרטי: </h4>
+         <p>{user.firstName}</p>
+         <br/>
+
+       <h4>שם משפחה:</h4>
+       <p>{user.lastName}</p>
+       </div>
         <div>
-       :שם פרטי 
-        </div>
-        <div>
-        : שם משפחה
-        </div>
-        <div>
-        : דואר אלקטרוני 
-        </div>
-        <div>
-       : גיל
-        </div>
-        <div>
-       : תחביבים
-        </div>
-        <button onClick={UpdateUserDetails}>עדכון פרטים</button>
+        <h4>דואר אלקטרוני:</h4>
+       <p>{user.email}</p>
+         
+       <h4>קצת עליי..</h4>
+       <p>{user.aboutMe}</p>
+       </div>
+       <div>
+       <h4>תחביבים:</h4>
+       <p>{user.hobbies}</p>
+       </div>
+       </div>
+        <button onClick={handleRoute}>עדכון פרטים</button>
         </div>
     )
 }
+        
+
+
+
+//         <div className="App">
+//         <header className="Header">דף פרופייל</header>
+//         <div className="profile">
+//          {user.username}: שם משתמש 
+//         </div>
+//         <div>
+//        :שם פרטי 
+//         </div>
+//         <div>
+//         : שם משפחה
+//         </div>
+//         <div>
+//         : דואר אלקטרוני 
+//         </div>
+//         <div>
+//        : גיל
+//         </div>
+//         <div>
+//        : תחביבים
+//         </div>
+//         <button onClick={UpdateUserDetails}>עדכון פרטים</button>
+//         </div>
+//     )
+// }
  /*
 class ProfileScreen extends React.Component {
     constructor(props){
@@ -105,10 +150,8 @@ class ProfileScreen extends React.Component {
            </Row>
             </Container>
         )
-
     }
     
-
 }
 */
 export default ProfileScreen;

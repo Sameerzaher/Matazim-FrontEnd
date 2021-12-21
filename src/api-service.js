@@ -25,71 +25,94 @@ static DisplayUserInfo(token, id, data){
         body: JSON.stringify( data )
     }).then( resp => resp.json())  
 }*/
-static getUserDetails(id){
+// static getUserDetails(id){
 
-    return fetch(`${LOCAL_URL}/main/users/${id}`,{
-        method: 'GET',
+//     return fetch(`${LOCAL_URL}/main/users/${id}`,{
+//         method: 'GET',
+//         headers: {  
+//             'Content-Type':'application/json',
+           
+//         }
+//     }).then( resp => resp.json())
+//     //.then( res => props.UpdateUser(res))
+//     //.catch( error => console.log(error))
+// } 
+static getUserDetails(token){
+
+    return fetch(`${BASE_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
         headers: {  
             'Content-Type':'application/json',
-           
+            'Authorization': `Token ${token}` 
         }
-    }).then( resp => resp.json())
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
     //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
 } 
-/*
-static getUserDetails(props,id){
 
-    return fetch(`${BASE_URL}/main/users/${id}`,{
-        method: 'GET',
+static getUserDetails(token){
+
+    return fetch(`${BASE_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
         headers: {  
             'Content-Type':'application/json',
-           
+            'Authorization': `Token ${token}` 
         }
-    }).then( resp => resp.json())
-   // .then( res => props.UpdateUser(res))
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
-} */
-static UpdateUser(token, id, data){ 
-    return fetch(`${BASE_URL}/main/users/${id}/`, {
-        method: 'PUT',
+} 
+static getUserDetails(token){
+
+    return fetch(`${LOCAL_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+}
+static UpdateUserDetails(token){
+
+    return fetch(`${LOCAL_URL}/main/userProfile/1/UpdateUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+}  
+static loginUser(body){ 
+    return fetch(`${BASE_URL}/auth/`, {
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify( data )
-    }).then( resp => resp.json())
-    }
-static UpdateUser(token, id, data){ 
-        return fetch(`${LOCAL_URL}/main/users/${id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            body: JSON.stringify( data )
+        body: JSON.stringify( body )
         }).then( resp => resp.json())
-        }   
-    static loginUser(body){ 
-        return fetch(`${BASE_URL}/auth/`, {
+    }
+static registerUser(body){ 
+    console.log(body)
+        return fetch(`${BASE_URL}/main/users/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify( body )
-        }).then( resp => resp.json())
-        }
-
-        static registerUser(body){ 
-            console.log(body)
-            return fetch(`${BASE_URL}/main/users/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify( body )
             }).then( resp => resp.json())
-            }
+        }
         static displayCourses(){ 
                 console.log("inside displayCourses fun")
                 return fetch(`${BASE_URL}/main/courses/`, {

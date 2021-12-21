@@ -7,7 +7,8 @@ import ProjectsScreen from './pages/ProjectsScreen';
 import ProfileScreen from './pages/ProfileScreen';
 import CoursesMainScreen from './pages/CoursesMainScreen';
 import TeachersScreen from './pages/TeachersScreen';
-import AboutusScreen from './pages/AboutusScreen'
+import AboutusScreen from './pages/AboutusScreen';
+import UpdateUserDetails from './components/UpdateUserDetails';
 import Signin from './pages/Signin'; 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/AboutusScreen" component={AboutusScreen} />
         <Route path="/Signin" component={Signin} />
         <Route path="/CoursesMainScreen" component={CoursesMainScreen} />
+        <Route path="/UpdateUserDetails" component={UpdateUserDetails}/>
       </Switch>
     </Router>
   );
