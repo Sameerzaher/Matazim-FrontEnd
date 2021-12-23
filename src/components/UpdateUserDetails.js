@@ -43,22 +43,22 @@ const UpdateUserDetails = () => {
         
          <br/>
 
-         <h4>שם פרטי: </h4><button onClick={this.togglePopup.bind(this)}>Edit</button>
+         <h4>שם פרטי: </h4><button >Edit</button>
          <p>{user.firstName}</p>
          <br/>
 
-       <h4>שם משפחה:</h4>
+       <h4>שם משפחה:</h4><button>Edit</button>
        <p>{user.lastName}</p>
        </div>
         <div>
-        <h4>דואר אלקטרוני:</h4>
+        <h4>דואר אלקטרוני:</h4><button>Edit</button>
        <p>{user.email}</p>
          
-       <h4>קצת עליי..</h4>
+       <h4>קצת עליי..</h4><button>Edit</button>
        <p>{user.aboutMe}</p>
        </div>
        <div>
-       <h4>תחביבים:</h4>
+       <h4>תחביבים:</h4><button>Edit</button>
        <p>{user.hobbies}</p>
        </div>
        </div>
