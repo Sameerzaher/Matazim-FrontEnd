@@ -37,9 +37,35 @@ static DisplayUserInfo(token, id, data){
 //     //.then( res => props.UpdateUser(res))
 //     //.catch( error => console.log(error))
 // } 
+static getUserDetails(token){
 
+    return fetch(`${BASE_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+} 
 
+static getUserDetails(token){
 
+    return fetch(`${BASE_URL}/main/userProfile/1/getUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+} 
 static getUserDetails(token){
 
     return fetch(`${LOCAL_URL}/main/userProfile/1/getUserDetails/`,{
@@ -53,59 +79,40 @@ static getUserDetails(token){
      .then( resp => resp.json())
     //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
-} 
-/*
-static getUserDetails(props,id){
-    return fetch(`${BASE_URL}/main/users/${id}`,{
-        method: 'GET',
+}
+static UpdateUserDetails(token){
+
+    return fetch(`${LOCAL_URL}/main/userProfile/1/UpdateUserDetails/`,{
+        method: 'POST',
         headers: {  
             'Content-Type':'application/json',
-           
+            'Authorization': `Token ${token}` 
         }
-    }).then( resp => resp.json())
-   // .then( res => props.UpdateUser(res))
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
-} */
-static UpdateUser(token, id, data){ 
-    return fetch(`${BASE_URL}/main/users/${id}/`, {
-        method: 'PUT',
+}  
+static loginUser(body){ 
+    return fetch(`${BASE_URL}/auth/`, {
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify( data )
-    }).then( resp => resp.json())
-    }
-static UpdateUser(token, id, data){ 
-        return fetch(`${LOCAL_URL}/main/users/${id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            body: JSON.stringify( data )
+        body: JSON.stringify( body )
         }).then( resp => resp.json())
-        }   
-    static loginUser(body){ 
-        return fetch(`${BASE_URL}/auth/`, {
+    }
+static registerUser(body){ 
+    console.log(body)
+        return fetch(`${BASE_URL}/main/users/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify( body )
-        }).then( resp => resp.json())
-        }
-
-        static registerUser(body){ 
-            console.log(body)
-            return fetch(`${BASE_URL}/main/users/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify( body )
             }).then( resp => resp.json())
-            }
+        }
         static displayCourses(){ 
                 console.log("inside displayCourses fun")
                 return fetch(`${BASE_URL}/main/courses/`, {
@@ -199,7 +206,25 @@ static UpdateUser(token, id, data){
                                     //body: JSON.stringify( body )
                                 }).then( resp => resp.json())
                                 // .then( resp => console.log(resp))
-                                }           
+                                }  
+                                static getCourses(num){ 
+                                    return fetch(`${BASE_URL}/main/courses/${num}`, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                         },
+                                    }).then( resp => resp.json())
+                                    }  
+
+                                    static getCourses(num){ 
+                                        return fetch(`${LOCAL_URL}/main/courses/${num}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                             },
+                                        }).then( resp => resp.json())
+                                        } 
+
                         static getLessons(){ 
                                 console.log("inside getLessons fun")
                                 // return fetch(`http://127.0.0.1:8000/main/courses/1/`, {
@@ -342,6 +367,17 @@ static UpdateUser(token, id, data){
                                           .then( resp => resp.json())
                                     
                                        } 
+                                       static getAllUserCourses(token){                                                       
+                                        return fetch(`${LOCAL_URL}/main/userCourses/1/getAllUserCourses/`, {
+                                            method: 'GET',
+                                            headers: {
+                                              'Content-Type': 'application/json',
+                                              'Authorization': `Token ${token}` 
+                                                 },                         
+                                            })                                    
+                                              .then( resp => resp.json())                                       
+                                           } 
+
                                        
                                        static updateUserCourse(token, data, numOfCourse){                             
                                         return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/addUserCourses/`, {
@@ -356,4 +392,13 @@ static UpdateUser(token, id, data){
                                             })
                                               .then( resp => resp.json())
                                            }
+                                           static getClassByID(){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/2/getClassStudents/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     },                                           
+                                              })
+                                             .then( resp => resp.json())                                                                                                                               
+                                             }  
     }

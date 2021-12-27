@@ -313,11 +313,6 @@ else
                 {lessonsList.push(lesson.lessons)}
                 // {setsSelectedCourse(lesson)}
                 return <h2>{lesson.lessons.map((name) =>
-                   //{if(name.numOfLesson<=userLastLesson){
-                      //<ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name} </li> </ul>}
-                  // else
-                  //   <ul class={"lessonsList"}> <li>{name.name + " (נעול)"} </li> </ul>
-                // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() => displayLessons(name)}>{name.name + " (נעול)"} </li> </ul>
                   <ul class={name.numOfLesson>userLastLesson? "coursesListBlocked" :name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}>
                   <li onClick={() => displayLessons(name)}>
                   {name.numOfLesson>userLastLesson?   name.name + " (נעול)":name.name } </li> </ul>
