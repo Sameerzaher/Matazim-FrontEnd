@@ -206,7 +206,25 @@ static registerUser(body){
                                     //body: JSON.stringify( body )
                                 }).then( resp => resp.json())
                                 // .then( resp => console.log(resp))
-                                }           
+                                }  
+                                static getCourses(num){ 
+                                    return fetch(`${BASE_URL}/main/courses/${num}`, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                         },
+                                    }).then( resp => resp.json())
+                                    }  
+
+                                    static getCourses(num){ 
+                                        return fetch(`${LOCAL_URL}/main/courses/${num}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                             },
+                                        }).then( resp => resp.json())
+                                        } 
+
                         static getLessons(){ 
                                 console.log("inside getLessons fun")
                                 // return fetch(`http://127.0.0.1:8000/main/courses/1/`, {
@@ -349,6 +367,17 @@ static registerUser(body){
                                           .then( resp => resp.json())
                                     
                                        } 
+                                       static getAllUserCourses(token){                                                       
+                                        return fetch(`${LOCAL_URL}/main/userCourses/1/getAllUserCourses/`, {
+                                            method: 'GET',
+                                            headers: {
+                                              'Content-Type': 'application/json',
+                                              'Authorization': `Token ${token}` 
+                                                 },                         
+                                            })                                    
+                                              .then( resp => resp.json())                                       
+                                           } 
+
                                        
                                        static updateUserCourse(token, data, numOfCourse){                             
                                         return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/addUserCourses/`, {
@@ -363,4 +392,13 @@ static registerUser(body){
                                             })
                                               .then( resp => resp.json())
                                            }
+                                           static getClassByID(){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/2/getClassStudents/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     },                                           
+                                              })
+                                             .then( resp => resp.json())                                                                                                                               
+                                             }  
     }
