@@ -12,7 +12,7 @@ import Signin from '../pages/Signin';
 
 
 const CoursesScreen = () => {
-  const [token, setToken, deleteToken] = useCookies(['mr-token']);
+  const [token] = useCookies(['mr-token']);
   console.log("token is: ", token['mr-token'])
   // const user = parseJwt(token['mr-token']);
 

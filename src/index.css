@@ -22,3 +22,26 @@ code {
   left: 160px;
 }
 
+.teacherScreen{
+  direction: rtl;
+  display: grid;
+  grid-template-columns:3fr 3fr 3fr;
+  grid-gap: 20px;
+  position: relative;
+  width: 1300px;
+  left: 160px;
+}
+.dropdown{
+  display: grid;
+  grid-gap: 20px;
+  position: relative;
+  width: 500px;
+  left: 800px;
+}
+.username{
+  cursor: pointer;
+}
+.username:hover {
+	color: blue;
+}
+

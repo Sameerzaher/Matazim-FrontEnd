@@ -15,7 +15,7 @@ const ProfileScreen = () => {
     const handleRoute = () =>{ 
         history.push("/UpdateUserDetails");
       }
-    const [token, setToken, deleteToken] = useCookies(['mr-token']);
+    const [token] = useCookies(['mr-token']);
 
     const [user,setUser] = useState([]);
     const [courses,setCourses] = useState([]);
@@ -27,6 +27,7 @@ const ProfileScreen = () => {
 
 
     useEffect(()=>{
+        if(!token['mr-token']) window.location.href = '/Signin';
         //var username = Signin.username
         //console.log("username is:",username)
         API.getUserDetails(token['mr-token'])
@@ -40,8 +41,8 @@ const ProfileScreen = () => {
             .catch( error => console.log(error))
 
 
-            /////test
-            API.getClassByID()
+            /////todo - add int value
+            API.getClassStudentsByID(2)
             .then(resp => setsStudentsInClass(resp.results)) 
             .catch( error => console.log(error))
     }, [])
@@ -69,11 +70,7 @@ const ProfileScreen = () => {
      }) 
     
     }
-     const printCoursesList = () =>{
-         console.log("Im here")
-         //coursesList.push(userCourses[0].name)
-         console.log("printCoursesList ",userCourses)
-     }
+    
     return(
         <div className="App">
         <header className="Header"> הדף של {user.firstName}  {user.lastName}</header>

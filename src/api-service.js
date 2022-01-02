@@ -392,8 +392,8 @@ static registerUser(body){
                                             })
                                               .then( resp => resp.json())
                                            }
-                                           static getClassByID(){                                                                                  
-                                                return fetch(`${LOCAL_URL}/main/class/2/getClassStudents/`, {
+                                           static getClassStudentsByID(classId){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/${classId}/getClassStudents/`, {
                                                      method: 'POST',
                                                      headers: {
                                                         'Content-Type': 'application/json'
@@ -401,4 +401,57 @@ static registerUser(body){
                                               })
                                              .then( resp => resp.json())                                                                                                                               
                                              }  
+                                             static getClassTeacherssByID(classId){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/${classId}/getClassTeachers/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     },                                           
+                                              })
+                                             .then( resp => resp.json())                                                                                                                               
+                                             }  
+                                             static getClassCoordinatorsByID(classId){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/${classId}/getClassCoordinators/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     },                                           
+                                              })
+                                             .then( resp => resp.json())                                                                                                                               
+                                             }  
+                                             static getUserProfileById(id){                                     
+                                                return fetch(`${LOCAL_URL}/main/userProfile/${id}/`, {
+                                                    method: 'GET',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                        },                       
+                                                })
+                                                .then( resp => resp.json())
+                                            }
+                                            static getUserByUsername(username){  
+                                                console.log("im here");                                                                                
+                                                return fetch(`${LOCAL_URL}/main/userProfile/1/getUserByUsername/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     }, 
+                                                     body: JSON.stringify({'username' : username})
+                                                                                    
+                                              })
+                                              .then( resp => resp.json())  
+                                            //   .then( resp => resp.json()) 
+                                            }
+                                            static addStudentToClass(classId, username){                             
+                                                return fetch(`${LOCAL_URL}/main/class/${classId}/addUserToClass/`, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                    
+                                                      'Content-Type': 'application/json',
+                                                    //   'Authorization': `Token ${token}` 
+                                                         },
+                                                         body: JSON.stringify({'student' : username})  
+                                                            
+                                                    })
+                                                      .then( resp => resp.json())
+                                                   }
     }
