@@ -18,6 +18,7 @@ const UpdateUserDetails = () => {
       
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
     const [user,setUser] = useState([]);
+    const [firstName,setfirstName] = useState([]);
     const[popup, setPopup ] = useState();
     const [UpdateUserfirstnamePopUp, setUpdateUserfirstnamePopUp ] = useState(false);
     const [UpdateUserlastnamePopUp, setUpdateUserlastnamePopUp ] = useState(false);
@@ -68,15 +69,13 @@ const UpdateUserDetails = () => {
       
       setUpdateUserhobbiesPopUp(true);
     }
-    /*
-    const savechanges= () =>  { 
-      if(currentLesson.id)
-        API.updateUserNotes(token['mr-token'], notes, currentLesson.id)
-      else
-        API.updateUserNotes(token['mr-token'], notes, params.get('firstLessonId'))
-       setNotePopup(false)
+    
+    const savechangesfirstname= () =>  { 
+      if(user.id)
+        API.UpdateUserDetails(token['mr-token'], firstName, user.id)
+       setUpdateUserfirstnamePopUp(false)
       }
-      */
+      
     return(
         <div className="App">
         <header className="Header">דף שינוי פרטים</header>
@@ -104,9 +103,9 @@ const UpdateUserDetails = () => {
         <Popup trigger={UpdateUserfirstnamePopUp} setTrigger={setUpdateUserfirstnamePopUp}>
           <h3>שם פרטי:</h3>
           {console.log("first name popup message test")}
-          <textarea>{user.firstName}</textarea>
+          <textarea name = "firstNameTA" value={firstName} onChange={e => setfirstName(e.target.value) }>{user.firstName}</textarea>
         <br/>
-        <button >שמור</button>
+        <button onClick={savechangesfirstname}>שמור</button>
         </Popup>
         <Popup trigger={UpdateUserlastnamePopUp} setTrigger={setUpdateUserlastnamePopUp}>
           <h3>שם משפחה:</h3>

@@ -1,10 +1,11 @@
 import { API } from '../api-service';
 import React, {useEffect, useState} from 'react';
 import '../CoursesMain.css';
+import { useCookies } from 'react-cookie';
 
 const CoursesMainScreen = () => {
     const [coursesList, setCourses] = useState([]);
-
+    const [token] = useCookies(['mr-token']);
     //get all the courses in the database
     useEffect(() =>{ 
         API.displayCourses()
@@ -13,19 +14,11 @@ const CoursesMainScreen = () => {
       }, [])
 
       const goToCourse= (course) =>  {
-            console.log("in go to course")
-            console.log(course.name)
-            console.log(course.lessons[0].link)
-            //  window.location.href =`/CoursesScreen?id=${course.id}`;
-            // <Link
-            //     to={
-            //         pathname: "/CoursesScreen",
-            //         state: course // your data array of objects
-            //     }
-            // >
-             //window.location.href = `/CoursesScreen(course)
-            window.location.href ='/CoursesScreen?id=' + course.id + "&link=" + course.lessons[0].link + "&firstLessonId=" + course.lessons[0].id ; 
-            // window.open("{{ url('/CoursesScreen?id=')}}");
+            if(!token['mr-token']) window.location.href = '/Signin';
+            else{
+                console.log("in go to course")         
+                window.location.href ='/CoursesScreen?id=' + course.id + "&link=" + course.lessons[0].link + "&firstLessonId=" + course.lessons[0].id ;            
+            }
       }
 return ( 
 
