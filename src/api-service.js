@@ -2,21 +2,6 @@ import React from "react"
 const BASE_URL = 'https://yarintz.pythonanywhere.com';
 const LOCAL_URL = 'http://127.0.0.1:8000';
 export class API extends React.Component{
-static UpdateUserDetails(token, data){
-
-        return fetch(`${LOCAL_URL}/main/userProfile/2/`,{
-            method: 'PUT',
-            headers: {  
-                'Content-Type':'application/json',
-                'Authorization': `Token ${token}` 
-            },
-            body: JSON.stringify({'firstname' : data})
-        })
-        //.then(resp => console.log(resp))
-         .then( resp => resp.json())
-        //.then( res => props.UpdateUser(res))
-        //.catch( error => console.log(error))
-    }  
 /*
 static DisplayUser(body){ 
         console.log(body)
@@ -95,7 +80,20 @@ static getUserDetails(token){
     //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
 }
- 
+static UpdateUserDetails(token){
+
+    return fetch(`${LOCAL_URL}/main/userProfile/1/UpdateUserDetails/`,{
+        method: 'POST',
+        headers: {  
+            'Content-Type':'application/json',
+            'Authorization': `Token ${token}` 
+        }
+    })
+    //.then(resp => console.log(resp))
+     .then( resp => resp.json())
+    //.then( res => props.UpdateUser(res))
+    //.catch( error => console.log(error))
+}  
 static loginUser(body){ 
     return fetch(`${BASE_URL}/auth/`, {
         method: 'POST',
@@ -369,7 +367,7 @@ static registerUser(body){
                                           .then( resp => resp.json())
                                     
                                        } 
-                                       static getAllUserCourses(token){                                                       
+                                       static getAllUserCourses(token){                                                        
                                         return fetch(`${LOCAL_URL}/main/userCourses/1/getAllUserCourses/`, {
                                             method: 'GET',
                                             headers: {
@@ -378,8 +376,37 @@ static registerUser(body){
                                                  },                         
                                             })                                    
                                               .then( resp => resp.json())                                       
-                                           } 
-
+                                           }
+                                        //    static getAllUserCourses(token){                                                       
+                                        //     return fetch(`${BASE_URL}/main/userCourses/1/getAllUserCourses/`, {
+                                        //         method: 'GET',
+                                        //         headers: {
+                                        //           'Content-Type': 'application/json',
+                                        //           'Authorization': `Token ${token}` 
+                                        //              },                         
+                                        //         })                                    
+                                        //           .then( resp => resp.json())                                       
+                                        //        }  
+                                               static getAllCoursesByUserId(id){  
+                                                console.log("id is: " ,id)                                                     
+                                                return fetch(`${LOCAL_URL}/main/userCourses/${id}/getAllCoursesByUserId/`, {
+                                                    method: 'GET',
+                                                    headers: {
+                                                      'Content-Type': 'application/json',                                                     
+                                                         },                         
+                                                    }).then( resp => resp.json())
+                                                     //.then( resp => console.log("in API ", resp))                                       
+                                                   }
+                                                //    static getAllCoursesByUserId(id){ 
+                                                //     console.log("im here in base")                                                      
+                                                //     return fetch(`${BASE_URL}/main/userCourses/${id}/getAllCoursesByUserId/`, {
+                                                //         method: 'GET',
+                                                //         headers: {
+                                                //           'Content-Type': 'application/json',                                                       
+                                                //              },                         
+                                                //         })                                    
+                                                //           .then( resp => resp.json())                                       
+                                                //        }  
                                        
                                        static updateUserCourse(token, data, numOfCourse){                             
                                         return fetch(`${LOCAL_URL}/main/userCourses/${numOfCourse}/addUserCourses/`, {
@@ -456,4 +483,32 @@ static registerUser(body){
                                                     })
                                                       .then( resp => resp.json())
                                                    }
+
+                                                   static removeStudentFromClass(classId, username){ 
+                                                    console.log("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");                            
+                                                    return fetch(`${LOCAL_URL}/main/class/${classId}/removeUserFromClass/`, {
+                                                        method: 'POST',
+                                                        headers: {
+                                                        
+                                                          'Content-Type': 'application/json',
+                                                        //   'Authorization': `Token ${token}` 
+                                                             },
+                                                             body: JSON.stringify({'student' : username})  
+                                                                
+                                                        })
+                                                          .then( resp => resp.json())
+                                                       }
+                                                    //    static removeStudentFromClass(classId, username){                             
+                                                    //     return fetch(`${BASE}/main/class/${classId}/removeUserFromClass/`, {
+                                                    //         method: 'POST',
+                                                    //         headers: {
+                                                            
+                                                    //           'Content-Type': 'application/json',
+                                                    //         //   'Authorization': `Token ${token}` 
+                                                    //              },
+                                                    //              body: JSON.stringify({'student' : username})  
+                                                                    
+                                                    //         })
+                                                    //           .then( resp => resp.json())
+                                                    //        }
     }
