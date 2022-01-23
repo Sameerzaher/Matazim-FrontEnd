@@ -20,7 +20,8 @@ const UserProfile = () => {
     const search = window.location.search; // returns the URL query String
     const params = new URLSearchParams(search); 
     const IdFromURL = params.get('id');
-
+    const IdUserFromURL = params.get('idUser');
+    const IdClassFromURL = params.get('idClass');
     const [user,setUser] = useState([]);
     const [courses,setCourses] = useState([]);
     const [userCourses, setUserCourses] = useState([]);
@@ -31,7 +32,7 @@ const UserProfile = () => {
 
 
     useEffect(()=>{
-        
+        console.log("id from url is: ", IdFromURL)
         API.getUserProfileById(IdFromURL)
          .then(resp => setUser(resp))  
          .catch( error => console.log(error)) 
@@ -48,11 +49,24 @@ const UserProfile = () => {
 
 
             /////todo - add int value
-            API.getClassStudentsByID(2)
+          API.getClassStudentsByID(2)
             .then(resp => setsStudentsInClass(resp.results)) 
+            .catch( error => console.log(error))
+
+          //get all the courses of the selected user  
+          API.getAllCoursesByUserId(IdUserFromURL)
+            //.then(resp => console.log("resppppppppppppppp", resp)) 
+            .then(resp => getCourseName(resp.results)) 
             .catch( error => console.log(error))
     }, [])
 
+    const getCourseName = (courses) =>{
+      console.log("in fun",courses)
+      courses.map(course => { 
+          API.getCourses(course.course) 
+               .then(resp => setUserCourses((userCourses) => [...userCourses, resp]))
+   })     
+  }
     // const getCourseName = (courses) =>{
     //     console.log("in fun",courses)
     //     courses.map(course => { 
@@ -65,6 +79,11 @@ const UserProfile = () => {
     
     // }
     
+    const backToClass= () =>  {
+      window.location.href ='/TeachersScreen?class=' + IdClassFromURL;
+      }
+
+
     return(
         <div className="App">
         <header className="Header"> הדף של {user.firstName}  {user.lastName}</header>
@@ -72,6 +91,7 @@ const UserProfile = () => {
             <div>
         <h4>שם משתמש:</h4>
          <p>{user.username}</p>
+         {console.log("user data: ",user)}
 
          {/* test */}
          {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
@@ -87,26 +107,27 @@ const UserProfile = () => {
        <p>{user.lastName}</p>
        </div>
         <div>
-        <h4>דואר אלקטרוני:</h4>
-       <p>{user.email}</p>
+        {/* <h4>דואר אלקטרוני:</h4>
+       <p>{user.email}</p> */}
          
        <h4>קצת עליי..</h4>
        <p>{user.aboutMe}</p>
 
        <h4>הקורסים שלי:</h4>
-
         { userCourses.map(course => { 
-                return <p>
-                 
+                return <p>                
                   <p>
-                  {course.name} </p> 
-              
-            
-            </p> 
-               
+                  {course.name} </p>                           
+            </p>                
           })}
       
-
+      <h4>הכיתות שלי:</h4>
+      { user.studentClasses && user.studentClasses.map(userClass => { 
+                return <p>              
+                  <p>
+                  {userClass.className} </p>                             
+             </p>                
+          })} 
 
 
       
@@ -123,7 +144,7 @@ const UserProfile = () => {
          <p>{user.myGoal}</p>
        </div>
        </div>
-        {/* <button onClick={handleRoute}>עדכון פרטים</button> */}
+        <button onClick={backToClass}>חזרה לכיתה</button>
         </div>
     )
 }

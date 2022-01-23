@@ -45,14 +45,14 @@ const logoutUser = () => {
                     פרויקטים
                 </NavLink> 
                 <NavLink to="/CoursesMainScreen" activeStyle>
-                    לֹמידה
+                    למידה
                 </NavLink>
                 <NavLink to="/HomeScreen" activeStyle>
                     דף הבית
                 </NavLink>
                
 
-                {token['mr-token'] ? (<NavBtn onClick={logoutUser} activeStyle>
+                {token['mr-token'] && token['mr-token']!='undefined' ? (<NavBtn onClick={logoutUser} activeStyle>
                     התנתק
                 </NavBtn> ) : <NavLink  to="/Signin" activeStyle>
                     התחבר

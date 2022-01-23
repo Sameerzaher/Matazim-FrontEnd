@@ -50,25 +50,9 @@ const ProfileScreen = () => {
     const getCourseName = (courses) =>{
         console.log("in fun",courses)
         courses.map(course => { 
-            // console.log(course.course)
             API.getCourses(course.course) 
-                 //.then(resp => console.log(resp.name))
-                  //.then(resp => setUserCourses(resp))
                  .then(resp => setUserCourses((userCourses) => [...userCourses, resp]))
-                //.then(resp => coursesList.push(resp.name))
-                //.then(resp => coursesList.push(resp.name)) 
-                //.then(console.log("print ", coursesList)) 
-                // this.setState(previousState => ({
-                //     myArray: [...previousState.myArray, 'new value']
-                // }));
-                 //.then(resp => setUserCourses(userCourses, resp))
-                //     myArray:[ userCourses, resp] })))
-                     
-                // .then(resp => setUserCourses(resp)) 
-                // .catch( error => console.log(error))
-              //  .then(resp => printCoursesList(resp))
-     }) 
-    
+     })     
     }
     
     return(
@@ -93,8 +77,8 @@ const ProfileScreen = () => {
        <p>{user.lastName}</p>
        </div>
         <div>
-        <h4>דואר אלקטרוני:</h4>
-       <p>{user.email}</p>
+        {/* <h4>דואר אלקטרוני:</h4>
+       <p>{user.email}</p> */}
          
        <h4>קצת עליי..</h4>
        <p>{user.aboutMe}</p>
@@ -102,15 +86,18 @@ const ProfileScreen = () => {
        <h4>הקורסים שלי:</h4>
 
         { userCourses.map(course => { 
-                return <p>
-                  {/* <ul> */}
+                return <p>           
                   <p>
-                  {course.name} </p> 
-                  {/* </ul> */}
-                {/* // <ul class={name.numOfLesson == currentLesson.numOfLesson ? "currentList": "lessonsList"}> <li onClick={() =>  displayLessons(name)}>{  name.numOfLesson>userLastLesson? name.name + " (נעול)"}b:name.name } </li> </ul> */}
-            
+                  {course.name} </p>                             
             </p> 
                
+          })}
+   <h4>הכיתות שלי:</h4>
+{ user.studentClasses && user.studentClasses.map(userClass => { 
+                return <p>              
+                  <p>
+                  {userClass.className} </p>                             
+             </p>                
           })}
       
 
