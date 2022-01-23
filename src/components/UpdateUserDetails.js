@@ -37,36 +37,26 @@ const UpdateUserDetails = () => {
       //if(this.user === undefined) {return}
       console.log('inside open Popup');
       setPopup('');
-      console.log("user name ",user.firstName)
-      
       setUpdateUserfirstnamePopUp(true);
     } 
     const openlastnamePopup = () =>{
       console.log('inside open last name Popup');
       setPopup('');
-      console.log("user name ",user.firstName)
-      
       setUpdateUserlastnamePopUp(true);
     }
     const openemailPopup = () =>{
       console.log('inside open email Popup');
       setPopup('');
-      console.log("user name ",user.firstName)
-      
       setUpdateUseremailPopUp(true);
     }
     const openaboutmePopup = () =>{
       console.log('inside open about me Popup');
       setPopup('');
-      console.log("user name ",user.firstName)
-      
       setUpdateUseraboutmePopUp(true);
     }
     const openhobbiesPopup = () =>{
       console.log('inside open hobbies Popup');
       setPopup('');
-      console.log("user name ",user.firstName)
-      
       setUpdateUserhobbiesPopUp(true);
     }
     
