@@ -18,6 +18,7 @@ const UpdateUserDetails = () => {
       
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
     const [user,setUser] = useState([]);
+    const [firstName,setfirstName] = useState([]);
     const[popup, setPopup ] = useState();
     const [UpdateUserfirstnamePopUp, setUpdateUserfirstnamePopUp ] = useState(false);
     const [UpdateUserlastnamePopUp, setUpdateUserlastnamePopUp ] = useState(false);
@@ -47,13 +48,16 @@ const UpdateUserDetails = () => {
       
       setUpdateUserlastnamePopUp(true);
     }
+    /*
     const openemailPopup = () =>{
       console.log('inside open email Popup');
+
       setPopup('');
       console.log("user name ",user.firstName)
       
       setUpdateUseremailPopUp(true);
     }
+    */
     const openaboutmePopup = () =>{
       console.log('inside open about me Popup');
       setPopup('');
@@ -67,6 +71,10 @@ const UpdateUserDetails = () => {
       console.log("user name ",user.firstName)
       
       setUpdateUserhobbiesPopUp(true);
+    }
+    const savefirstnamechanges=() =>{
+      API.UpdateUserfirstName(firstName)
+      setUpdateUserfirstnamePopUp(false)
     }
     /*
     const savechanges= () =>  { 
@@ -90,8 +98,7 @@ const UpdateUserDetails = () => {
           <p>{user.lastName}</p>
        </div>
         <div>
-        <h4>דואר אלקטרוני:</h4><button onClick={openemailPopup}>עריכה</button>
-       <p>{user.email}</p>
+      
        <h4>קצת עליי..</h4><button onClick={openaboutmePopup}>עריכה</button>
        <p>{user.aboutMe}</p>
        </div>
@@ -106,7 +113,7 @@ const UpdateUserDetails = () => {
           {console.log("first name popup message test")}
           <textarea>{user.firstName}</textarea>
         <br/>
-        <button >שמור</button>
+        <button onClick={savefirstnamechanges}>שמור</button>
         </Popup>
         <Popup trigger={UpdateUserlastnamePopUp} setTrigger={setUpdateUserlastnamePopUp}>
           <h3>שם משפחה:</h3>

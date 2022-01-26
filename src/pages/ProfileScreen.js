@@ -64,7 +64,7 @@ const ProfileScreen = () => {
          <p>{user.username}</p>
 
          {/* test */}
-         {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
+        
          {console.log("the students in class number 2 are: ",studentsInClass)}
         
          <br/>

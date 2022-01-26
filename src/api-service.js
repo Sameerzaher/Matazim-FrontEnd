@@ -80,14 +80,15 @@ static getUserDetails(token){
     //.then( res => props.UpdateUser(res))
     //.catch( error => console.log(error))
 }
-static UpdateUserDetails(token){
+static UpdateUserfirstName(token,data){
 
-    return fetch(`${LOCAL_URL}/main/userProfile/1/UpdateUserDetails/`,{
+    return fetch(`${LOCAL_URL}/main/userProfile/2/`,{
         method: 'POST',
         headers: {  
             'Content-Type':'application/json',
             'Authorization': `Token ${token}` 
-        }
+        },
+        body: JSON.stringify({'firstName' : data})
     })
     //.then(resp => console.log(resp))
      .then( resp => resp.json())
@@ -113,7 +114,7 @@ static registerUser(body){
             body: JSON.stringify( body )
             }).then( resp => resp.json())
         }
-        static displayCourses(){ 
+static displayCourses(){ 
                 console.log("inside displayCourses fun")
                 return fetch(`${BASE_URL}/main/courses/`, {
                     method: 'GET',
