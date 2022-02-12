@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
 import Signin from '../pages/Signin'; 
 import { useHistory } from "react-router-dom";
-
+import Popup from '../components/Popup';
 import '../index.css';
 import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
@@ -20,6 +20,12 @@ const ProfileScreen = () => {
     const [user,setUser] = useState([]);
     const [courses,setCourses] = useState([]);
     const [userCourses, setUserCourses] = useState([]);
+    const [updateDetailsPopup, setUpdateDetailsPopup] = useState(false);
+    const[newFirstname, setNewFirstName ] = useState();
+    const[newLastName, setNewLastName ] = useState();
+    const[newAboutMe, setNewAboutMe ] = useState();
+    const[newHobbies, setNewHobbies ] = useState();
+    const[newMyGoal, setNewMyGoal ] = useState();
 
     //   test
     const [studentsInClass, setsStudentsInClass] = useState([]);
@@ -32,19 +38,22 @@ const ProfileScreen = () => {
         //console.log("username is:",username)
         API.getUserDetails(token['mr-token'])
             //.then(resp => console.log("resp is:", resp.results))
-         .then(resp => setUser(resp.results))  
+         .then(resp => setUser(resp.results))
+         .then(resp => console.log(resp.results))
+        //  .then(setDetails())  
          .catch( error => console.log(error)) 
         API.getAllUserCourses(token['mr-token'])
             .then(resp => getCourseName(resp.results)) 
             //.then(resp => console.log("resp is:", resp.results))
             // .then(resp => setCourses(resp.results))  
             .catch( error => console.log(error))
+      
+        
 
-
-            /////todo - add int value
-            API.getClassStudentsByID(2)
-            .then(resp => setsStudentsInClass(resp.results)) 
-            .catch( error => console.log(error))
+    //         /////todo - add int value
+    //         API.getClassStudentsByID(2)
+    //         .then(resp => setsStudentsInClass(resp.results)) 
+    //         .catch( error => console.log(error))
     }, [])
 
     const getCourseName = (courses) =>{
@@ -54,18 +63,50 @@ const ProfileScreen = () => {
                  .then(resp => setUserCourses((userCourses) => [...userCourses, resp]))
      })     
     }
+    const setDetails= () =>  {
+      console.log("inside setDetails", user)  
+      console.log("time passed: ", user)
+      setNewFirstName(user.firstName)
+      setNewLastName(user.lastName)
+      setNewAboutMe(user.aboutMe)
+      setNewHobbies(user.hobbies)
+      setNewMyGoal(user.myGoal)
     
+      }
+
+    const updateDetails= () =>  {
+      setDetails()
+      setUpdateDetailsPopup(true)
+      }
+
+      const updateNewDetails= () =>  {      
+         API.updateUserDetails(token['mr-token'], newFirstname, newLastName, newAboutMe, newHobbies, newMyGoal)
+         setUpdateDetailsPopup(false)
+         sleep(100).then(()=>{
+          API.getUserDetails(token['mr-token'])     
+            .then(resp => setUser(resp.results))
+            .then(resp => console.log(resp.results)) 
+            .catch(error => console.log(error)) 
+           })
+        }
+
+      function sleep(time){
+        return new Promise((resolve)=>setTimeout(resolve,time)
+      )
+  }
     return(
         <div className="App">
         <header className="Header"> הדף של {user.firstName}  {user.lastName}</header>
         <div className="profile">
+          
+      
             <div>
         <h4>שם משתמש:</h4>
          <p>{user.username}</p>
 
          {/* test */}
-         {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
-         {console.log("the students in class number 2 are: ",studentsInClass)}
+         {/* {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
+         {console.log("the students in class number 2 are: ",studentsInClass)} */}
         
          <br/>
 
@@ -75,6 +116,7 @@ const ProfileScreen = () => {
 
        <h4>שם משפחה:</h4>
        <p>{user.lastName}</p>
+      
        </div>
         <div>
         {/* <h4>דואר אלקטרוני:</h4>
@@ -82,7 +124,7 @@ const ProfileScreen = () => {
          
        <h4>קצת עליי..</h4>
        <p>{user.aboutMe}</p>
-
+       
        <h4>הקורסים שלי:</h4>
 
         { userCourses.map(course => { 
@@ -108,6 +150,7 @@ const ProfileScreen = () => {
        <div>
        <h4>תחביבים:</h4>
        <p>{user.hobbies}</p>
+      
        <br/>
        <h4>הבאדג'ים שלך:</h4>
          <p>{user.badges}</p>
@@ -115,11 +158,45 @@ const ProfileScreen = () => {
          <br/>
          <h4>המטרה שלי:</h4>
          <p>{user.myGoal}</p>
+         
        </div>
        </div>
         <button onClick={handleRoute}>עדכון פרטים</button>
+        <button onClick={updateDetails}> עדכון פרטים חדש</button>
+
+        <Popup trigger={updateDetailsPopup} setTrigger={setUpdateDetailsPopup}>
+  <h4>עדכון פרטים</h4>
+  {/* <input type = "text" onChange={e => setUserToSearch(e.target.value) + setAddedSuccesfullyMessage('')}></input> */}
+{console.log("in popup ", user)}
+
+  <input type = "text" value={newFirstname} 
+  onChange={e => setNewFirstName(e.target.value)}></input>
+  <h7> שם פרטי</h7><br/>
+  <input type = "text" value={newLastName} 
+  onChange={e => setNewLastName(e.target.value)}></input>
+   <h7> שם משפחה</h7><br/>
+    <input type = "text" value={newAboutMe} 
+  onChange={e => setNewAboutMe(e.target.value)}></input>
+  <h7> קצת עלי</h7><br/>
+    <input type = "text" value={newHobbies} 
+  onChange={e => setNewHobbies(e.target.value)}></input>
+  <h7> תחביבים</h7><br/>
+    <input type = "text" value={newMyGoal} 
+  onChange={e => setNewMyGoal(e.target.value)}></input>
+ <h7> המטרה שלי</h7><br/>
+    <button onClick={updateNewDetails}>עדכן פרטים</button>
+    {/* {console.log("users are: ",userToAdd.id)}
+    <h5>{userToAdd!="null"?  userToAdd.username: " לא נמצא שם משתמש"}</h5>
+    {<button  style={{display : userToAdd!="null"  ? "none": ""}} onClick={() => goToSignIn(userToSearch)}>רשום משתמש</button>}
+    <p>{userToAdd && userToAdd.firstName}</p>
+    <p>{userToAdd && userToAdd.lastName}</p>
+    {<button  style={{display : userToAdd.id  ? "": "none"}} onClick={() => addUser(userToAdd.username)}>הוסף</button>}
+    <p>{addedSuccesfullyMessage}</p>     */}
+
+</Popup> 
+
         </div>
-    )
+    )    
 }
         
 

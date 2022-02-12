@@ -49,9 +49,9 @@ const UserProfile = () => {
 
 
             /////todo - add int value
-          API.getClassStudentsByID(2)
-            .then(resp => setsStudentsInClass(resp.results)) 
-            .catch( error => console.log(error))
+          // API.getClassStudentsByID(2)
+          //   .then(resp => setsStudentsInClass(resp.results)) 
+          //   .catch( error => console.log(error))
 
           //get all the courses of the selected user  
           API.getAllCoursesByUserId(IdUserFromURL)
@@ -94,8 +94,8 @@ const UserProfile = () => {
          {console.log("user data: ",user)}
 
          {/* test */}
-         {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
-         {console.log("the students in class number 2 are: ",studentsInClass)}
+         {/* {console.log("user class is: ",user.studentClasses && user.studentClasses[0].className)}
+         {console.log("the students in class number 2 are: ",studentsInClass)} */}
         
          <br/>
 

@@ -8,8 +8,9 @@ function Signin(){
     const[username, setUsername ] = useState('');
     const[password, setPassword ] = useState('');
     const[errorMessage, setErrorMessage ] = useState('');
-    // var errorMessage = "";
     const[token, setToken] = useCookies(['mr-token']);
+    const[isLoginView, setIsLoginView ] = useState(true);
+    const[userRegistered, setUserRegistered ] = useState(false);
  
     //const emailRegex = /^(([^<>()[]\\.,;:\s@\"]+(\.[^<>()[]\\.,;:\s@\"]+)*)|(\".+\"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     useEffect( () =>{
@@ -21,7 +22,17 @@ function Signin(){
                 window.location.href ='/HomePageScreen'; 
       }, [token])
 
-    const[isLoginView, setIsLoginView ] = useState(true);
+    //   useEffect( () =>{
+    //     console.log("in use effect og registration")
+    //     API.registerUserProfile(username)
+    //         .then( resp => console.log(resp))
+    //         //.then( resp => console.log(resp))                
+    //         .catch( error => console.log(error))
+    //     setUserRegistered(false);
+    //   }, [userRegistered])
+
+
+  
 
     const loginClicked = () =>  {
         console.log(username, password)
@@ -37,12 +48,34 @@ function Signin(){
             setErrorMessage('הכנס סיסמא');
         else{
             setErrorMessage('');
-            API.registerUser({username, password})
-                .then( resp => console.log(resp))
-                .catch( error => console.log(error)) 
+            registerUser();
+            createUserProfile()
+            // API.registerUser({username, password})
+            //     .then( resp => console.log(resp))
+            //     //.then( await createUserProfile(username))
+            //     .catch( error => console.log(error))
+            // await createUserProfile(username)
         }    
     }
-    
+    function sleep(time){
+        return new Promise((resolve)=>setTimeout(resolve,time)
+      )
+  }
+    const registerUser = () =>  {
+        API.registerUser({username, password})
+                .then( resp => console.log(resp))
+                .then( setUserRegistered(true))
+                .catch( error => console.log(error))
+                //setUserRegistered(true)     
+    }
+    const createUserProfile =  () => {       
+        console.log("gfhfghghf")
+        sleep(100).then(()=>{
+        API.registerUserProfile(username)
+            .then( resp => console.log(resp))                
+            .catch( error => console.log(error)) 
+        })
+    }
 
     return (
           <div className="App">
@@ -62,7 +95,7 @@ function Signin(){
                   <p onClick={() => setIsLoginView(false)}> אם אינך רשום לאתר - הירשם כאן</p>: 
                   <p onClick={() => setIsLoginView(true)}>  אם הינך רשום לאתר - התחבר כאן</p>
                 }
-
+{/* <button onClick={() => createUserProfile(username)}>לחץ כאן</button> */}
             </div>
     
       )

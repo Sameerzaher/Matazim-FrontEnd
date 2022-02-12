@@ -11,6 +11,7 @@ import AboutusScreen from './pages/AboutusScreen';
 import UpdateUserDetails from './components/UpdateUserDetails';
 import Signin from './pages/Signin'; 
 import UserProfile from './pages/UserProfile'; 
+import UserRegistration from './pages/UserRegistration'; 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/CoursesMainScreen" component={CoursesMainScreen} />
         <Route path="/UpdateUserDetails" component={UpdateUserDetails}/>
         <Route path="/UserProfile" component={UserProfile}/>
+        <Route path="/UserRegistration" component={UserRegistration}/>
       </Switch>
     </Router>
   );
