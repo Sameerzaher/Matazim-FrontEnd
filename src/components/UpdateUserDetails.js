@@ -8,21 +8,17 @@ import { useHistory } from "react-router-dom";
 import Popup from './Popup';
 //import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
-
-
 const UpdateUserDetails = () => {
   const history = useHistory();
   const handleRoute = () =>{ 
       history.push("/ProfileScreen");
-    }
-      
+    }  
     const [token, setToken, deleteToken] = useCookies(['mr-token']);
     const [user,setUser] = useState([]);
     const [firstName,setfirstName] = useState([]);
     const[popup, setPopup ] = useState();
     const [UpdateUserfirstnamePopUp, setUpdateUserfirstnamePopUp ] = useState(false);
     const [UpdateUserlastnamePopUp, setUpdateUserlastnamePopUp ] = useState(false);
-    const [UpdateUseremailPopUp, setUpdateUseremailPopUp ] = useState(false);
     const [UpdateUseraboutmePopUp, setUpdateUseraboutmePopUp ] = useState(false);
     const [UpdateUserhobbiesPopUp, setUpdateUserhobbiesPopUp ] = useState(false);
     useEffect(()=>{
@@ -72,9 +68,18 @@ const UpdateUserDetails = () => {
       
       setUpdateUserhobbiesPopUp(true);
     }
-    const savefirstnamechanges=() =>{
+    const savefirstnamechanges=() => {
       API.UpdateUserfirstName(firstName)
       setUpdateUserfirstnamePopUp(false)
+    }
+    const savelastnamechanges=() => {
+        setUpdateUserlastnamePopUp(false)
+    }
+    const saveaboutmechanges=() => {
+        setUpdateUseraboutmePopUp(false)
+    }
+    const savehobbieschanges=() => {
+      setUpdateUserhobbiesPopUp(false)
     }
     /*
     const savechanges= () =>  { 
@@ -98,7 +103,6 @@ const UpdateUserDetails = () => {
           <p>{user.lastName}</p>
        </div>
         <div>
-      
        <h4>קצת עליי..</h4><button onClick={openaboutmePopup}>עריכה</button>
        <p>{user.aboutMe}</p>
        </div>
@@ -120,28 +124,21 @@ const UpdateUserDetails = () => {
           {console.log("last name popup message test")}
           <textarea>{user.lastName}</textarea>
         <br/>
-        <button >שמור</button>
-        </Popup>
-        <Popup trigger={UpdateUseremailPopUp} setTrigger={setUpdateUseremailPopUp}>
-          <h3>דואר אלקטרוני:</h3>
-          {console.log("mail popup message test")}
-          <textarea>{user.email}</textarea>
-        <br/>
-        <button >שמור</button>
+        <button onClick={savelastnamechanges}>שמור</button>
         </Popup>
         <Popup trigger={UpdateUseraboutmePopUp} setTrigger={setUpdateUseraboutmePopUp}>
           <h3>קצת עליי..:</h3>
           {console.log("about me popup message test")}
           <textarea>{user.aboutMe}</textarea>
         <br/>
-        <button >שמור</button>
+        <button onClick={saveaboutmechanges}>שמור</button>
         </Popup>
         <Popup trigger={UpdateUserhobbiesPopUp} setTrigger={setUpdateUserhobbiesPopUp}>
           <h3>תחביבים:</h3>
           {console.log("hobbies popup message test")}
           <textarea>{user.hobbies}</textarea>
         <br/>
-        <button >שמור</button>
+        <button onClick={savehobbieschanges}>שמור</button>
         </Popup>
         </div>
     )
