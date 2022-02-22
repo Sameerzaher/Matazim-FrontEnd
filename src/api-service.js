@@ -115,7 +115,21 @@ static registerUser(body){
             body: JSON.stringify( body )
             }).then( resp => resp.json())
         }
-        static registerUserProfile(username){ 
+        // static registerUserProfile(username){ 
+        //     return fetch(`${LOCAL_URL}/main/userProfile/1/createUserProfile/`, {
+        //         method: 'POST',
+        //         headers: {
+                
+        //           'Content-Type': 'application/json',
+        //           //'Authorization': `Token ${token}` 
+        //              },
+        //              body: JSON.stringify({'username' : username})  
+                        
+        //         })
+        //           .then( resp => resp.json())
+                
+        //        } 
+        static registerUserProfile(username, firstName, lastName){ 
             return fetch(`${LOCAL_URL}/main/userProfile/1/createUserProfile/`, {
                 method: 'POST',
                 headers: {
@@ -123,12 +137,12 @@ static registerUser(body){
                   'Content-Type': 'application/json',
                   //'Authorization': `Token ${token}` 
                      },
-                     body: JSON.stringify({'username' : username})  
+                     body: JSON.stringify({'username' : username, 'firstName' : firstName,'lastName' : lastName} )  
                         
                 })
                   .then( resp => resp.json())
                 
-               }  
+               }   
 
         static displayCourses(){ 
                 console.log("inside displayCourses fun")
@@ -324,6 +338,18 @@ static registerUser(body){
                           .then( resp => resp.json())
                         //.then( resp => console.log("eewrwerrewreerwewfaj"))
                        }  
+                       static getUserAnswersById(userId){                     
+                        return fetch(`${LOCAL_URL}/main/userLessons/1/getUserAnswers/`, {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json'
+                                 },
+                                 body: JSON.stringify({'userId' : userId})  
+                     
+                            })
+                              .then( resp => resp.json())
+                     
+                           }
                        static updateUserNotes(token, data, numOfLesson){ 
                          return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
                             method: 'POST',

@@ -7,6 +7,8 @@ function Signin(){
     
     const[username, setUsername ] = useState('');
     const[password, setPassword ] = useState('');
+    const[firstName, setFirstName ] = useState('');
+    const[lastName, setLastaName ] = useState('');
     const[errorMessage, setErrorMessage ] = useState('');
     const[token, setToken] = useCookies(['mr-token']);
     const[isLoginView, setIsLoginView ] = useState(true);
@@ -42,14 +44,20 @@ function Signin(){
             .catch( error => console.log(error))     
     }
     const registerClicked = () =>  {
+        // checke if all the values correct
         if (!validator.isEmail(username))
             setErrorMessage('שם משתמש לא חוקי');
-        else if (password=="")    // errorMessage = 'שם משתמש לא חוקי'
+        else if (password=="")    
             setErrorMessage('הכנס סיסמא');
+        else if (firstName=="")   
+            setErrorMessage('הכנס שם פרטי');
+        else if (lastName=="")  
+            setErrorMessage('הכנס שם משפחה');
         else{
             setErrorMessage('');
             registerUser();
-            createUserProfile()
+            
+            // createUserProfile()
             // API.registerUser({username, password})
             //     .then( resp => console.log(resp))
             //     //.then( await createUserProfile(username))
@@ -64,6 +72,7 @@ function Signin(){
     const registerUser = () =>  {
         API.registerUser({username, password})
                 .then( resp => console.log(resp))
+                .then(createUserProfile)
                 .then( setUserRegistered(true))
                 .catch( error => console.log(error))
                 //setUserRegistered(true)     
@@ -71,7 +80,7 @@ function Signin(){
     const createUserProfile =  () => {       
         console.log("gfhfghghf")
         sleep(100).then(()=>{
-        API.registerUserProfile(username)
+        API.registerUserProfile(username, firstName, lastName)
             .then( resp => console.log(resp))                
             .catch( error => console.log(error)) 
         })
@@ -88,8 +97,22 @@ function Signin(){
              <label htmlFor="password">Password</label><br/>
               <input id="password" type="password" placeholder="password" value={password}
                      onChange={ evt=> setPassword(evt.target.value)}/><br/>
+
+            {isLoginView ? " ": <label htmlFor="firstName">שם פרטי</label>}
+            {isLoginView ? " ":<br/>}
+            {isLoginView ? " ": <input id="firstName" type="text" placeholder=" " value={firstName}
+                     onChange={ evt=> setFirstName(evt.target.value)}   
+              />}
+              {isLoginView ? " ": <br/>}
+              {isLoginView ? " ":<label htmlFor="lastName">שם משפחה</label>}
+              {isLoginView ? " ":<br/>}
+              {isLoginView ? " ":<input id="lastName" type="text" placeholder=" " value={lastName}
+                     onChange={ evt=> setLastaName(evt.target.value)}/>}
+                   {isLoginView ? " ":  <br/>}  
+    
              {isLoginView ?  
                 <button onClick={loginClicked}>התחבר</button>:
+                
                 <button onClick={registerClicked}>הירשם</button>}
                 {isLoginView ? 
                   <p onClick={() => setIsLoginView(false)}> אם אינך רשום לאתר - הירשם כאן</p>: 

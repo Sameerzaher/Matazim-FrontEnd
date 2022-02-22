@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { API } from '../api-service';
 import Signin from './Signin'; 
 import { useHistory } from "react-router-dom";
-
+import Popup from '../components/Popup';
 import '../index.css';
 import UpdateUserDetails from '../components/UpdateUserDetails'
 const axios = require('axios');
@@ -23,11 +23,11 @@ const UserProfile = () => {
     const IdUserFromURL = params.get('idUser');
     const IdClassFromURL = params.get('idClass');
     const [user,setUser] = useState([]);
-    const [courses,setCourses] = useState([]);
+   // const [courses,setCourses] = useState([]);
     const [userCourses, setUserCourses] = useState([]);
-
+    const [actionsPopup, setActionsPopup] = useState(false);
     //   test
-    const [studentsInClass, setsStudentsInClass] = useState([]);
+    //const [studentsInClass, setsStudentsInClass] = useState([]);
 
 
 
@@ -82,6 +82,12 @@ const UserProfile = () => {
     const backToClass= () =>  {
       window.location.href ='/TeachersScreen?class=' + IdClassFromURL;
       }
+      const actions= () =>  {
+        setActionsPopup(true)
+        }
+        const checkAssignments= () =>  {
+          window.location.href ='/CheckUserAssignments?id=' + IdUserFromURL;
+          }
 
 
     return(
@@ -144,9 +150,17 @@ const UserProfile = () => {
          <p>{user.myGoal}</p>
        </div>
        </div>
+       <button onClick={actions}>פעולות</button><br/>
         <button onClick={backToClass}>חזרה לכיתה</button>
+        <Popup trigger={actionsPopup} setTrigger={setActionsPopup}>
+  {<button onClick={() => checkAssignments()}>בדוק מטלות</button>}<br/>
+  {<button onClick={() => backToClass()}>הוסף לתת קבוצה</button>}<br/>
+  {<button onClick={() => backToClass()}>הענק תג</button>}
+</Popup>
         </div>
+        
     )
 }
+
 
 export default UserProfile;
