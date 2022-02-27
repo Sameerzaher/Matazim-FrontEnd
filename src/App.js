@@ -12,6 +12,7 @@ import UpdateUserDetails from './components/UpdateUserDetails';
 import Signin from './pages/Signin'; 
 import UserProfile from './pages/UserProfile'; 
 import UserRegistration from './pages/UserRegistration'; 
+import CheckUserAssignments from './pages/CheckUserAssignments';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
@@ -38,6 +39,7 @@ function App() {
         <Route path="/UpdateUserDetails" component={UpdateUserDetails}/>
         <Route path="/UserProfile" component={UserProfile}/>
         <Route path="/UserRegistration" component={UserRegistration}/>
+        <Route path="/CheckUserAssignments" component={CheckUserAssignments}/>
       </Switch>
     </Router>
   );
