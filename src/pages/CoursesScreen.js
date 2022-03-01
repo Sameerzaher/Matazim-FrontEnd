@@ -46,10 +46,11 @@ const[buttonPopup, setButtonPopup ] = useState(false);
 const[notePopup, setNotePopup ] = useState(false);
 const[notes, setNotes ] = useState();
 const[answer, setAnswer ] = useState();
+const[link, setLink ] = useState();
 const[userLastLesson, setUserLastLesson ] = useState(1);
 const lessonsList =[];
 var numOfLessons = 0;
-
+const [file, setFile] = React.useState("");
 //const [playing, setPlaying] = useState()
 
 
@@ -77,7 +78,16 @@ var numOfLessons = 0;
 }, [])
 
 
+function handleUpload(event) {
+  setFile(event.target.files[0]);
 
+  // Add code here to upload file to server
+  // ...
+}
+const ImageThumb = ({ image }) => {
+  return <img src={URL.createObjectURL(image)}  width='100'
+  height='100' alt={image.name} />;
+};
 //console.log(parseJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'))
 // const setFirstUrl= () =>  {
 //   console.log("courses[0]")
@@ -140,18 +150,26 @@ const playNextLesson= () =>  {
       console.log(currentLesson.assignment);
       console.log("lesson number is: ", lessonNumber);
       setAnswer('')
+      setLink('')
+     // setFile('')
 
       if(currentLesson.id){
         API.getUserAnswer(token['mr-token'], currentLesson.id)
-        //.then( resp => console.log(resp))
-        .then( resp => setAnswer(resp.results[0].answer))
+        .then( resp => setLessonDetails(resp.results[0]))
+        //.then( resp => console.log("look here!!!", resp.results[0]))
+        
+         //.then( resp => setAnswer(resp.results[0].answer))
+        // .then( resp => setLink(resp.results[0].link))
+        // .then( resp => setFile(resp.results[0].image))
         .catch( error => console.log(error))
       }
       else{
         console.log("im in else")
         API.getUserAnswer(token['mr-token'], params.get('firstLessonId'))
-        //.then( resp => console.log(resp))
-        .then( resp => setAnswer(resp.results[0].answer))
+        //.then( resp => console.log("look here!!!", resp.results[0]))
+         .then( resp => setLessonDetails(resp.results[0]))
+        //  .then( resp => setLink(resp.results[0].link))
+        //  .then( resp => setFile(resp.results[0].image))
         .catch( error => console.log(error))
       }
        
@@ -177,7 +195,11 @@ const playNextLesson= () =>  {
   
   }
 }
-
+const setLessonDetails = (results) =>{
+  setAnswer(results.answer)
+  setLink(results.link)
+  setFile(results.image)
+}
 
 
 const playPreviousLesson= () =>  {
@@ -204,10 +226,11 @@ const proceedToNextLesson= () =>  {
     setUserLastLesson(userLastLesson+1)
     }
   console.log(" inside fun proceed");
+  console.log(file);
   if(currentLesson.id)
-    API.updateUserAnswer(token['mr-token'], answer, currentLesson.id)
+    API.updateUserAnswer(token['mr-token'], answer, link, file, currentLesson.id)
   else
-    API.updateUserAnswer(token['mr-token'], answer, params.get('firstLessonId'))
+    API.updateUserAnswer(token['mr-token'], answer, link, file, params.get('firstLessonId'))
   {lessonsList.map(lesson => {
     return setUrl(lesson[lessonNumber].link), setCurrentLesson(lesson[lessonNumber])
   })}
@@ -232,8 +255,6 @@ const openNotes= () =>  {
   console.log("maybe that: ",  params.get('firstLessonId'))
   if(currentLesson.id){
     API.getUserNotes(token['mr-token'],currentLesson.id)
-      // .then( console.log("resp.results[0].notes"))
-      // .then( resp => console.log(resp))
       .then( resp => setNotes(resp.results[0].notes))
       .catch( error => console.log(error))
   }
@@ -399,10 +420,26 @@ else
           {console.log(currentLesson.assignment)}
           <p>{currentLesson.assignment}</p>
           {console.log("answer is: ",answer)}
-          <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
+          
+          <p>:טקסט חופשי</p>
           <input type = "text" value={answer} 
           onChange={e => setAnswer(e.target.value)}
           ></input>
+          <br/> 
+          <p>:הכנס לינק</p>
+          <input type = "text" value={link} 
+          onChange={e => setLink(e.target.value)}
+          ></input>
+          {/* <div id="upload-box"> */}
+            <p>:העלה תמונה</p>
+          <input type="file" onChange={handleUpload} />
+          {/* <p>Filename: {file.name}</p>
+          <p>File type: {file.type}</p>
+          <p>File size: {file.size} bytes</p> */}
+          {file && <ImageThumb image={file} />}
+          <br/> 
+          <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
+        {/* </div> */}
     </Popup>
     <Popup trigger={notePopup} setTrigger={setNotePopup}>
     

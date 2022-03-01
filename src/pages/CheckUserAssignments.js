@@ -9,6 +9,7 @@ import Popup from '../components/Popup';
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import HomepageScreen from './HomepageScreen';
 
 const CheckUserAssignments = () => {
   const[token] = useCookies(['mr-token']);
@@ -25,6 +26,7 @@ const CheckUserAssignments = () => {
    const lessonsList =[];
    const options=[];
    const defaultOption = '';
+   const[answerPopup, setAnswerPopup ] = useState(false); 
   
 
   useEffect(() =>{
@@ -57,14 +59,14 @@ const CheckUserAssignments = () => {
   }
 
 
-    const getCourseDetails= () =>  { 
-        API.getUserAnswersById(IdUserFromURL)
-        .then(resp => setUserAnswers(resp.results)) 
-        .catch( error => console.log(error)) 
-        sleep(1000).then(()=>{
-            console.log(userAnswers)
-        })
-    }
+    // const getCourseDetails= () =>  { 
+    //     API.getUserAnswersById(IdUserFromURL)
+    //     .then(resp => setUserAnswers(resp.results)) 
+    //     .catch( error => console.log(error)) 
+    //     sleep(1000).then(()=>{
+    //         console.log(userAnswers)
+    //     })
+    // }
 
     function handleChange(event) {
       console.log("event is: ",event);
@@ -73,13 +75,21 @@ const CheckUserAssignments = () => {
         if(options[i].value == event.value ){
           console.log(options[i].key);
           setSelectedCourse(options[i].key);
-          getCourseDetails()
+        //   getCourseDetails()
 
           break;
         }
     } 
          }
-
+         const showFullAnswer = (lessonId) =>{
+            API.getUserAnswersById(IdUserFromURL, lessonId)
+             .then(resp => setUserAnswers(resp.results)) 
+             .catch( error => console.log(error)) 
+            sleep(1000).then(()=>{
+            console.log(userAnswers)
+            })
+         setAnswerPopup(true)
+         }
  
     return (   
 
@@ -108,9 +118,12 @@ const CheckUserAssignments = () => {
                 return <p>{course.lessons.map((lesson) =>
 
                 <p>
-                <p > { lesson.name } </p> <br/></p>
+                <p > { lesson.name } </p> 
+                <button onClick={() => showFullAnswer(lesson.id)}>הצג תשובה לשיעור זה</button>
+                <br/></p>
 
              )} </p>
+             
                 }     
           })}
 </div>
@@ -138,20 +151,29 @@ const CheckUserAssignments = () => {
 </div>
 <div>
 <h3>תשובות:</h3>
-
-{userAnswers && userAnswers.map(lesson => { 
-    // console.log("lesson list is: ", lessonsList[0])
-    //     {if (lesson.id === lessonsList[0])
-    //     console.log("success")
-    //     }
+{/* <button onClick={showAnswer}>הצג תשובה לשיעור זה</button> */}
+{/* {userAnswers && userAnswers.map(lesson => { 
                return <p>
-                <p > {lesson.answer} </p> <br/></p>
-              })}
-     {/* })     }       */}
+               <p >{lesson.answer}</p> <br/>
+               <a href={lesson.link}>{lesson.link}</a>
+               </p>              
+              })} */}
+    
   </div>
 
     </div>
-   
+       <Popup trigger={answerPopup} setTrigger={setAnswerPopup}>
+    
+
+      <h3>אלו התשובות עבור שיעור זה</h3>
+{userAnswers && userAnswers.map(lesson => { 
+               return <p>
+               <p >{lesson.answer}</p> <br/>
+               <a href={lesson.link}>{lesson.link}</a>
+               </p>              
+              })}
+        
+    </Popup>
    
     </div>
      
