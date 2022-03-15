@@ -27,7 +27,8 @@ const CheckUserAssignments = () => {
    const options=[];
    const defaultOption = '';
    const[answerPopup, setAnswerPopup ] = useState(false); 
-  
+   const[selectedLesson, setSelectedLesoon ] = useState(); 
+   
 
   useEffect(() =>{
     if(!token['mr-token']) window.location.href = '/Signin';
@@ -88,6 +89,7 @@ const CheckUserAssignments = () => {
             sleep(1000).then(()=>{
             console.log(userAnswers)
             })
+         setSelectedLesoon(lessonId)
          setAnswerPopup(true)
          }
  
@@ -110,6 +112,9 @@ const CheckUserAssignments = () => {
     <div className="profile">
     <div>
     <h3>שיעורים:</h3>
+
+ 
+
       { userCourses.map(course => { 
               if(course.id === selectedCourse){
       
@@ -118,7 +123,7 @@ const CheckUserAssignments = () => {
                 return <p>{course.lessons.map((lesson) =>
 
                 <p>
-                <p > { lesson.name } </p> 
+                <p> { lesson.name } </p> 
                 <button onClick={() => showFullAnswer(lesson.id)}>הצג תשובה לשיעור זה</button>
                 <br/></p>
 
@@ -128,7 +133,7 @@ const CheckUserAssignments = () => {
           })}
 </div>
       <div>
-       {/* show on the screen the assignments belong to the chosen course */}
+       {/* show on the screen the assignments belong to the chosen course
       <h3>מטלות:</h3>
       { userCourses.map(course => { 
               if(course.id === selectedCourse){
@@ -142,7 +147,7 @@ const CheckUserAssignments = () => {
 
              )} </p>
                 }     
-          })}
+          })} */}
 
 
 
@@ -150,7 +155,7 @@ const CheckUserAssignments = () => {
              
 </div>
 <div>
-<h3>תשובות:</h3>
+{/* <h3>תשובות:</h3> */}
 {/* <button onClick={showAnswer}>הצג תשובה לשיעור זה</button> */}
 {/* {userAnswers && userAnswers.map(lesson => { 
                return <p>
@@ -165,11 +170,39 @@ const CheckUserAssignments = () => {
        <Popup trigger={answerPopup} setTrigger={setAnswerPopup}>
     
 
-      <h3>אלו התשובות עבור שיעור זה</h3>
+      
+       <h3>מטלה</h3>
+{/* display the assignmnet for the selected lesson */}
+      { userCourses.map(course => { 
+              if(course.id === selectedCourse){
+                {lessonsList.push(course.lessons)}               
+                return <p>{course.lessons.map((lesson) =>
+                  
+                  { if (lesson.id === selectedLesson){
+                  {console.log("i am here!!!!!!")}
+                  {console.log(lesson.id)}
+                  {console.log(lesson.assignment)}
+                  
+                  
+                // <p>                  
+                    return <p > { lesson.assignment=="null"? "אין מטלה לשיעור זה": lesson.assignment } </p>              
+                      // </p>
+                    }}
+                  )} </p>
+                }     
+          })}<br/>
+
+<h3>אלו התשובות עבור שיעור זה</h3>
+{/* display the answers for the selected lesson including image and link if attached */}
 {userAnswers && userAnswers.map(lesson => { 
                return <p>
-               <p >{lesson.answer}</p> <br/>
-               <a href={lesson.link}>{lesson.link}</a>
+              
+
+              
+               <p>{lesson.answer}</p> <br/>
+               <a href={lesson.link}>{lesson.link}</a> <br/><br/>
+               <img src={"http://127.0.0.1:8000"+lesson.image} width='100' 
+                height='100'></img>
                </p>              
               })}
         

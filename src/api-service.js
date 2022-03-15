@@ -355,13 +355,13 @@ static registerUser(body){
                             method: 'POST',
                             headers: {
                             
-                              'Content-Type': 'application/json',
+                            //   'Content-Type': 'application/json',
                               'Authorization': `Token ${token}` 
                                  },
                                  body: JSON.stringify({'notes' : data})  
                                     
                             })
-                              .then( resp => resp.json())
+                               .then( resp => resp.json())
                            }  
 
                            static getUserAnswer(token, data){ 
@@ -379,18 +379,36 @@ static registerUser(body){
                                   .then( resp => resp.json())
                             
                                }  
-                               static updateUserAnswer(token, answer,link, image, numOfLesson){                             
+                            //    static updateUserAnswer(token, answer,link, image, numOfLesson){                             
+                            //     return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
+                            //         method: 'POST',
+                            //         //format: 'multipart',
+                            //         headers: {
+                            //         //   'Accept': 'application/json, text/plain',
+                            //         //   'Content-Type': 'application/json',
+                            //           'Authorization': `Token ${token}` 
+                            //              },
+                            //             //  body: JSON.stringify({'answer' : answer, 'link' : link, 'image' : image})  
+                            //             // body: JSON.stringify({'answer' : answer, 'link' : link}), 'image' : image
+                            //             body: {'answer' : answer, 'link' : link, 'image' : image}
+                            //         })
+                            //           //.then( resp => resp.json())
+                            //        }
+
+                            static updateUserAnswer(token, uploadData, numOfLesson){                             
                                 return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
                                     method: 'POST',
+                                    //format: 'multipart',
                                     headers: {
-                                    
-                                      'Content-Type': 'application/json',
+                                    //   'Accept': 'application/json, text/plain',
+                                    //   'Content-Type': 'application/json',
                                       'Authorization': `Token ${token}` 
                                          },
-                                         body: JSON.stringify({'answer' : answer, 'link' : link, 'image' : image})  
-                                            
+                                        //  body: JSON.stringify({'answer' : answer, 'link' : link, 'image' : image})  
+                                        // body: JSON.stringify({'answer' : answer, 'link' : link}), 'image' : image
+                                        body: uploadData
                                     })
-                                      .then( resp => resp.json())
+                                      //.then( resp => resp.json())
                                    }
                                    
                                    static getUserLastLesson(token, numOfCourse){                                                       

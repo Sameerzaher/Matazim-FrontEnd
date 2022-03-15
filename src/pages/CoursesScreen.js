@@ -50,7 +50,8 @@ const[link, setLink ] = useState();
 const[userLastLesson, setUserLastLesson ] = useState(1);
 const lessonsList =[];
 var numOfLessons = 0;
-const [file, setFile] = React.useState("");
+const [file, setFile] = React.useState();
+const[newImage, setNewImage] = useState(false); 
 //const [playing, setPlaying] = useState()
 
 
@@ -80,13 +81,30 @@ const [file, setFile] = React.useState("");
 
 function handleUpload(event) {
   setFile(event.target.files[0]);
+  setNewImage(true)
 
   // Add code here to upload file to server
   // ...
 }
+//code from internet
+// var binaryData = [];
+// binaryData.push(data);
+// window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
+
+//real code!!!!!
+// const ImageThumb = ({ image }) => {
+//   return <img src={image && URL.createObjectURL(image)}  width='100'
+//   height='100' alt={image.name} />;
+  
+// };
+//try
 const ImageThumb = ({ image }) => {
-  return <img src={URL.createObjectURL(image)}  width='100'
+  var binaryData = [];
+  binaryData.push(image);
+  console.log("need to check the image: ", image)
+  return <img src={image && URL.createObjectURL(new Blob(binaryData))} width='100'
   height='100' alt={image.name} />;
+  
 };
 //console.log(parseJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'))
 // const setFirstUrl= () =>  {
@@ -195,10 +213,20 @@ const playNextLesson= () =>  {
   
   }
 }
+function sleep(time){
+  return new Promise((resolve)=>setTimeout(resolve,time)
+)
+}
+
 const setLessonDetails = (results) =>{
+  console.log("inside setlessonDetails. file is: " , results.image)
   setAnswer(results.answer)
   setLink(results.link)
   setFile(results.image)
+  setNewImage(false)
+  // sleep(1000).then(()=>{
+  //   <ImageThumb image={file} />
+  // })
 }
 
 
@@ -227,8 +255,16 @@ const proceedToNextLesson= () =>  {
     }
   console.log(" inside fun proceed");
   console.log(file);
-  if(currentLesson.id)
-    API.updateUserAnswer(token['mr-token'], answer, link, file, currentLesson.id)
+  // try
+  const uploadData = new FormData()
+  uploadData.append('answer', answer);
+  uploadData.append('link', link);
+  uploadData.append('image', file);
+  if(currentLesson.id){
+    console.log("look here!!! ", currentLesson.id)
+    API.updateUserAnswer(token['mr-token'], uploadData, currentLesson.id)}
+  // if(currentLesson.id)
+  //   API.updateUserAnswer(token['mr-token'], answer, link, file, currentLesson.id)
   else
     API.updateUserAnswer(token['mr-token'], answer, link, file, params.get('firstLessonId'))
   {lessonsList.map(lesson => {
@@ -267,6 +303,7 @@ const openNotes= () =>  {
   setNotePopup(true)
 }
 const saveNotes= () =>  { 
+console.log("look here::: ", notes)
 if(currentLesson.id)
   API.updateUserNotes(token['mr-token'], notes, currentLesson.id)
 else
@@ -430,13 +467,17 @@ else
           <input type = "text" value={link} 
           onChange={e => setLink(e.target.value)}
           ></input>
-          {/* <div id="upload-box"> */}
+        
             <p>:העלה תמונה</p>
           <input type="file" onChange={handleUpload} />
-          {/* <p>Filename: {file.name}</p>
-          <p>File type: {file.type}</p>
-          <p>File size: {file.size} bytes</p> */}
-          {file && <ImageThumb image={file} />}
+         
+          {console.log("check the file in popup: ", file)}
+          {/* {<img src={"http://127.0.0.1:8000/media/answers/yarinBBB%40gmail.com/IMG_20170911_091555.jpg" } width='100' 
+ height='100'></img>} */}
+ {/* /media/answers/yarinBBB%40gmail.com/IMG_20170912_173837.jpg */}
+ {file && newImage? <ImageThumb image={file} />:  <img src={"http://127.0.0.1:8000"+file } width='100' 
+ height='100'></img>}
+           {/* {file == ""&& <ImageThumb image={file} />} */}
           <br/> 
           <button onClick={proceedToNextLesson}>שמור והמשך לשיעור הבא</button>
         {/* </div> */}
