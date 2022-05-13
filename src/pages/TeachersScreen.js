@@ -15,7 +15,7 @@ const TeachersScreen = () => {
   const [user,setUser] = useState([]);
   const [selectedClass, setSelectedClass] = useState();
   const [studentInClass, setsStudentsInClass] = useState([]);
-  const [teachersInClass, setsTeachersInClass] = useState([]);
+  const [matatzesInClass, setsMatatzesInClass] = useState([]);
   const [coordinatorsInClass, setsCoordinatorsInClass] = useState([]);
   const [addStudentPopup, setAddStudentPopup] = useState(false);
   const [removeStudentPopup, setRemoveStudentPopup] = useState(false);
@@ -60,8 +60,8 @@ const TeachersScreen = () => {
       API.getClassStudentsByID(numOfClass)
       .then(resp => setsStudentsInClass(resp.results)) 
       .catch( error => console.log(error))
-      API.getClassTeacherssByID(numOfClass)
-      .then(resp => setsTeachersInClass(resp.results)) 
+      API.getClassMatatzesByID(numOfClass)
+      .then(resp => setsMatatzesInClass(resp.results)) 
       .catch( error => console.log(error))
       API.getClassCoordinatorsByID(numOfClass)
       .then(resp => setsCoordinatorsInClass(resp.results)) 
@@ -163,24 +163,34 @@ const TeachersScreen = () => {
             return 
           }
           console.log("im in addClasses")
-          user.teacherClasses && user.teacherClasses.map(teacherclass => { 
+          user.matatzClasses && user.matatzClasses.map(matatzclass => { 
             console.log("inside map")     
-            options.push({key:teacherclass.id,value:teacherclass.className})
+            options.push({key:matatzclass.id,value:matatzclass.className})
           })
           setGivenClass();
         }
+
+        const showReport= () =>  { 
+          window.location.href ='/ClassReportNew?idClass=' + selectedClass;
+        } 
+        const showTeacherReport= () =>  { 
+          window.location.href ='/TeacherReport?idUser=' + user.id;
+        }         
     return (   
     
     <div className="App">
        {console.log("in return type of user is: ", user.userType)}
        { user.userType=="1"? window.location.href = '/Homepagescreen': " "}
+      
       {/* <FontAwesomeIcon icon={faTimesCircle} />   */}
       <h1>הדרכה</h1>
+      <button onClick={() => showReport()}>הצג דוח כיתה</button>
+      {user.userType == "3" ? <button onClick={() => showTeacherReport()}>הצג דוח מורה</button>: ""}
       {/* insert to options all the classes guided by this user.
       insert the class id as a key and the class name as the value.
       the value will be shown in the dropdown */}
-      {user.teacherClasses && user.teacherClasses.map(Teacherclass => {
-                  {options.push({key:Teacherclass.id,value:Teacherclass.className})}       
+      {user.matatzClasses && user.matatzClasses.map(Matatzclass => {
+                  {options.push({key:Matatzclass.id,value:Matatzclass.className})}       
           })}
     
     {/* the dropdown will hold the classes of the user and will display them by their names*/}
@@ -229,11 +239,11 @@ const TeachersScreen = () => {
 </div>
 <div>
 <h3>מטצים:</h3>
-    {teachersInClass.map(teacher => { 
+    {matatzesInClass.map(matatz => { 
                     return <p>
                       
-                      <p className='username' onClick={() => viewProfile(teacher)}>
-                      {teacher.firstName+ " "+ teacher.lastName} </p> <br/>
+                      <p className='username' onClick={() => viewProfile(matatz)}>
+                      {matatz.firstName+ " "+ matatz.lastName} </p> <br/>
                      
                 </p>                  
               })}

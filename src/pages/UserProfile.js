@@ -36,26 +36,10 @@ const UserProfile = () => {
         API.getUserProfileById(IdFromURL)
          .then(resp => setUser(resp))  
          .catch( error => console.log(error)) 
-      //  if(!token['mr-token']) window.location.href = '/Signin';
- 
-        // API.getUserDetails(token['mr-token'])
-
-        //  .then(resp => setUser(resp.results))  
-        //  .catch( error => console.log(error)) 
-        // API.getAllUserCourses(token['mr-token'])
-        //     .then(resp => getCourseName(resp.results)) 
-
-        //     .catch( error => console.log(error))
 
 
-            /////todo - add int value
-          // API.getClassStudentsByID(2)
-          //   .then(resp => setsStudentsInClass(resp.results)) 
-          //   .catch( error => console.log(error))
-
-          //get all the courses of the selected user  
-          API.getAllCoursesByUserId(IdUserFromURL)
-            //.then(resp => console.log("resppppppppppppppp", resp)) 
+          //get all the courses of the selected user 
+          API.getAllCoursesByUserId(IdUserFromURL) 
             .then(resp => getCourseName(resp.results)) 
             .catch( error => console.log(error))
     }, [])

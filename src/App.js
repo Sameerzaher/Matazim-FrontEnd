@@ -13,6 +13,9 @@ import Signin from './pages/Signin';
 import UserProfile from './pages/UserProfile'; 
 import UserRegistration from './pages/UserRegistration'; 
 import CheckUserAssignments from './pages/CheckUserAssignments';
+import ClassReport from './pages/ClassReport';
+import ClassReportNew from './pages/ClassReportNew';
+import TeacherReport from './pages/TeacherReport';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
@@ -40,6 +43,9 @@ function App() {
         <Route path="/UserProfile" component={UserProfile}/>
         <Route path="/UserRegistration" component={UserRegistration}/>
         <Route path="/CheckUserAssignments" component={CheckUserAssignments}/>
+        <Route path="/ClassReport" component={ClassReport}/>
+        <Route path="/ClassReportNew" component={ClassReportNew}/>
+        <Route path="/TeacherReport" component={TeacherReport}/>
       </Switch>
     </Router>
   );

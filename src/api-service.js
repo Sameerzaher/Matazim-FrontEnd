@@ -350,7 +350,7 @@ static registerUser(body){
                               .then( resp => resp.json())
                      
                            }
-                       static updateUserNotes(token, data, numOfLesson){ 
+                       static updateUserNotes(token, uploadData, numOfLesson){ 
                          return fetch(`${LOCAL_URL}/main/userLessons/${numOfLesson}/addUserLessons/`, {
                             method: 'POST',
                             headers: {
@@ -358,10 +358,11 @@ static registerUser(body){
                             //   'Content-Type': 'application/json',
                               'Authorization': `Token ${token}` 
                                  },
-                                 body: JSON.stringify({'notes' : data})  
+                                //  body: JSON.stringify({'notes' : data})
+                            body: uploadData  
                                     
                             })
-                               .then( resp => resp.json())
+                            //    .then( resp => resp.json())
                            }  
 
                            static getUserAnswer(token, data){ 
@@ -435,6 +436,24 @@ static registerUser(body){
                                             })                                    
                                               .then( resp => resp.json())                                       
                                            }
+                                           static getAllUserCourses(){                                                        
+                                            return fetch(`${LOCAL_URL}/main/userCourses/`, {
+                                                method: 'GET',
+                                                headers: {
+                                                  'Content-Type': 'application/json'                                                
+                                                     },                         
+                                                })                                    
+                                                  .then( resp => resp.json())                                       
+                                               }
+                                               static getAllCourses(){                                                        
+                                                return fetch(`${LOCAL_URL}/main/courses/`, {
+                                                    method: 'GET',
+                                                    headers: {
+                                                      'Content-Type': 'application/json'                                                
+                                                         },                         
+                                                    })                                    
+                                                      .then( resp => resp.json())                                       
+                                                   }
                                         //    static getAllUserCourses(token){                                                       
                                         //     return fetch(`${BASE_URL}/main/userCourses/1/getAllUserCourses/`, {
                                         //         method: 'GET',
@@ -490,6 +509,15 @@ static registerUser(body){
                                              }  
                                              static getClassTeacherssByID(classId){                                                                                  
                                                 return fetch(`${LOCAL_URL}/main/class/${classId}/getClassTeachers/`, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                        'Content-Type': 'application/json'
+                                                     },                                           
+                                              })
+                                             .then( resp => resp.json())                                                                                                                               
+                                             } 
+                                             static getClassMatatzesByID(classId){                                                                                  
+                                                return fetch(`${LOCAL_URL}/main/class/${classId}/getClassMatatzes/`, {
                                                      method: 'POST',
                                                      headers: {
                                                         'Content-Type': 'application/json'
@@ -573,6 +601,15 @@ static registerUser(body){
                                                            })
                                                              .then( resp => resp.json())
                                                           }  
+                                                          static getStudentsMatatz(studentId){                                                                                  
+                                                            return fetch(`${LOCAL_URL}/main/group/${studentId}/getStudentsMatatz/`, {
+                                                                 method: 'POST',
+                                                                 headers: {
+                                                                    'Content-Type': 'application/json'
+                                                                 },                                           
+                                                          })
+                                                         .then( resp => resp.json())                                                                                                                               
+                                                         } 
                                                     //    static removeStudentFromClass(classId, username){                             
                                                     //     return fetch(`${BASE}/main/class/${classId}/removeUserFromClass/`, {
                                                     //         method: 'POST',

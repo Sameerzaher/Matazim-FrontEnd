@@ -14,16 +14,7 @@ import Signin from '../pages/Signin';
 const CoursesScreen = () => {
   const [token] = useCookies(['mr-token']);
   console.log("token is: ", token['mr-token'])
-  // const user = parseJwt(token['mr-token']);
-
-    
-
   
-//   render() 
-//     const { state } = this.props.location
-//     return (
-//       console.log(state)
-//     )
   
 const search = window.location.search; // returns the URL query String
 const params = new URLSearchParams(search); 
@@ -34,7 +25,7 @@ console.log("now");
 console.log(IdFromURL);
 console.log(linkFromURL);
 
-// console.log(courseFromUrl); 
+
 const [courses, setCourses] = useState([]);
 const [userLessons, setUserLessons] = useState([]);
 const [lessons, setLessons] = useState([]);
@@ -52,6 +43,8 @@ const lessonsList =[];
 var numOfLessons = 0;
 const [file, setFile] = React.useState();
 const[newImage, setNewImage] = useState(false); 
+var linkRegex = '(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})'
+var imageRegex = '(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i)' 
 //const [playing, setPlaying] = useState()
 
 
@@ -249,6 +242,27 @@ const playPreviousLesson= () =>  {
 }
 //proceed to the next lesson of the course after the popup message
 const proceedToNextLesson= () =>  {
+if(currentLesson.answerType == "1") //type text
+//validate that the text is not empty
+if(answer==""){
+  alert("הטקסט ריק")
+  return 
+}
+if(currentLesson.answerType == "2") // type link
+//validate that the link is correct
+if(!link.match(linkRegex))
+{
+  alert("הלינק לא נכון")
+  return 
+}
+if(currentLesson.answerType == "3")// type img
+// validate that the image is correct
+if(file&& (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(file.name)))
+{
+  alert("אין קובץ תמונה תקין")
+  return 
+}
+
   if(userLastLesson==lessonNumber){
     API.updateUserCourse(token['mr-token'], userLastLesson+1, IdFromURL)
     setUserLastLesson(userLastLesson+1)
@@ -273,6 +287,11 @@ const proceedToNextLesson= () =>  {
   setLessonsNumber(lessonNumber+1)
   setButtonPopup(false)
 }
+//link is not correct
+// else{
+// alert("הלינק לא נכון")
+// }
+// }
 // console.log("lessonNumber+2")
 // API.getNextLesson(lessonNumber+1)
 //     .then( resp => setCurrentLesson(resp))
@@ -304,12 +323,20 @@ const openNotes= () =>  {
 }
 const saveNotes= () =>  { 
 console.log("look here::: ", notes)
+const uploadNote = new FormData()
+uploadNote.append('notes', notes);
 if(currentLesson.id)
-  API.updateUserNotes(token['mr-token'], notes, currentLesson.id)
+  API.updateUserNotes(token['mr-token'], uploadNote, currentLesson.id)
 else
-  API.updateUserNotes(token['mr-token'], notes, params.get('firstLessonId'))
+  API.updateUserNotes(token['mr-token'], uploadNote, params.get('firstLessonId'))
  setNotePopup(false)
 }
+// if(currentLesson.id)
+//   API.updateUserNotes(token['mr-token'], notes, currentLesson.id)
+// else
+//   API.updateUserNotes(token['mr-token'], notes, params.get('firstLessonId'))
+//  setNotePopup(false)
+// }
 // const ref = player => {
 //   player = player
 // }
